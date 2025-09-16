@@ -1,0 +1,1003 @@
+# Copyright (C) 2024 Yeti Web
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Yeti WooCommerce Export 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/yeti-woocommerce-"
+"export\n"
+"POT-Creation-Date: 2025-03-10 11:18+0100\n"
+"PO-Revision-Date: 2025-07-18 10:28+0200\n"
+"Last-Translator: \n"
+"Language-Team: Swedish\n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.6\n"
+"X-Domain: yeti-woocommerce-export\n"
+
+#: includes/admin/class-export-wizard.php:22
+msgid "Export Wizard"
+msgstr "Exportguide"
+
+#: includes/admin/class-export-wizard.php:25
+msgid "Export"
+msgstr "Exportera"
+
+#: includes/admin/class-export-wizard.php:37
+msgid "Select Data Source"
+msgstr "Välj datakälla"
+
+#: includes/admin/class-export-wizard.php:47
+msgid "Debug"
+msgstr "Felsök"
+
+#: includes/admin/class-export-wizard.php:61
+msgid "Products"
+msgstr "Produkter"
+
+#: includes/admin/class-export-wizard.php:73
+msgid "Users"
+msgstr "Användare"
+
+#: includes/admin/class-export-wizard.php:85
+msgid "Orders"
+msgstr "Ordrar"
+
+#: includes/admin/class-export-wizard.php:107
+msgid "Choose the "
+msgstr "Välj "
+
+#: includes/admin/class-export-wizard.php:107
+msgid " to export"
+msgstr " att exportera"
+
+#: includes/admin/class-export-wizard.php:113
+msgid "Standard Fields"
+msgstr "Standardfält"
+
+#: includes/admin/class-export-wizard.php:118
+msgid "Select All"
+msgstr "Välj alla"
+
+#: includes/admin/class-export-wizard.php:119
+msgid "Deselect All"
+msgstr "Avmarkera alla"
+
+#: includes/admin/class-export-wizard.php:128
+msgid "Meta Fields"
+msgstr "Metafält"
+
+#: includes/admin/class-export-wizard.php:143
+msgid "Taxonomy Fields"
+msgstr "Taxonomifält"
+
+#: includes/admin/class-export-wizard.php:170
+msgid "Preview"
+msgstr "Förhandsgranskning"
+
+#: includes/admin/class-export-wizard.php:182
+msgid "Export Configuration"
+msgstr "Exportkonfiguration"
+
+#: includes/admin/class-export-wizard.php:187
+msgid "Export Settings"
+msgstr "Exportinställningar"
+
+#: includes/admin/class-export-wizard.php:193
+msgid "Name to identify this export"
+msgstr "Namn för att identifiera denna export"
+
+#: includes/admin/class-export-wizard.php:195
+msgid "Enter export name"
+msgstr "Ange exportnamn"
+
+#: includes/admin/class-export-wizard.php:196
+msgid "Generate"
+msgstr "Generera"
+
+#: includes/admin/class-export-wizard.php:202
+msgid "Format for your export file"
+msgstr "Format för din exportfil"
+
+#: includes/admin/class-export-wizard.php:222
+msgid "Product Filters"
+msgstr "Produktfilter"
+
+#: includes/admin/class-export-wizard.php:228
+msgid "Filter by product type"
+msgstr "Filtrera efter produkttyp"
+
+#: includes/admin/class-export-wizard.php:230
+msgid "All Types"
+msgstr "Alla typer"
+
+#: includes/admin/class-export-wizard.php:238
+msgid "Filter by product status"
+msgstr "Filtrera efter produktstatus"
+
+#: includes/admin/class-export-wizard.php:240
+msgid "All Statuses"
+msgstr "Alla statusar"
+
+#: includes/admin/class-export-wizard.php:241
+msgid "Published"
+msgstr "Publicerad"
+
+#: includes/admin/class-export-wizard.php:242
+msgid "Draft"
+msgstr "Utkast"
+
+#: includes/admin/class-export-wizard.php:243
+msgid "Pending"
+msgstr "Väntande"
+
+#: includes/admin/class-export-wizard.php:244
+msgid "Private"
+msgstr "Privat"
+
+#: includes/admin/class-export-wizard.php:254
+msgid "User Filters"
+msgstr "Användarfilter"
+
+#: includes/admin/class-export-wizard.php:260
+msgid "Filter by user role"
+msgstr "Filtrera efter användarroll"
+
+#: includes/admin/class-export-wizard.php:262
+msgid "All Roles"
+msgstr "Alla roller"
+
+#: includes/admin/class-export-wizard.php:270
+msgid "Filter by registration date"
+msgstr "Filtrera efter registreringsdatum"
+
+#: includes/admin/class-export-wizard.php:272
+msgid "All Time"
+msgstr "All tid"
+
+#: includes/admin/class-export-wizard.php:273
+msgid "Last 30 Days"
+msgstr "Senaste 30 dagarna"
+
+#: includes/admin/class-export-wizard.php:274
+msgid "Last 90 Days"
+msgstr "Senaste 90 dagarna"
+
+#: includes/admin/class-export-wizard.php:275
+msgid "Last 180 Days"
+msgstr "Senaste 180 dagarna"
+
+#: includes/admin/class-export-wizard.php:276
+msgid "Custom Range"
+msgstr "Anpassad tidsintervall"
+
+#: includes/admin/class-export-wizard.php:285
+msgid "From"
+msgstr "Från"
+
+#: includes/admin/class-export-wizard.php:289
+msgid "To"
+msgstr "Till"
+
+#: includes/admin/class-export-wizard.php:302
+msgid "Order Filters"
+msgstr "Orderfilter"
+
+#: includes/admin/class-export-wizard.php:308
+msgid "Filter by order status"
+msgstr "Filtrera efter orderstatus"
+
+#: includes/admin/class-export-wizard.php:318
+msgid "Filter by order date"
+msgstr "Filtrera efter orderdatum"
+
+#: includes/admin/class-export-wizard.php:363
+msgid "Click the download links above to download your files."
+msgstr "Klicka på nedladdningslänkarna ovan för att ladda ner dina filer."
+
+#: includes/admin/class-export-wizard.php:368
+msgid "Start Export"
+msgstr "Påbörja export"
+
+#: includes/admin/class-export-wizard.php:376
+msgid "Previous"
+msgstr "Föregående"
+
+#: includes/admin/class-export-wizard.php:377
+msgid "Next Step"
+msgstr "Nästa steg"
+
+#: includes/admin/class-export-wizard.php:394
+msgid "Missing source parameter"
+msgstr "Saknar källparameter"
+
+#: includes/admin/class-export-wizard.php:465
+msgid "Invalid source type"
+msgstr "Ogiltig källtyp"
+
+#: includes/admin/class-export-wizard.php:483
+msgid "The ID field is required and must be selected."
+msgstr "ID-fältet är obligatoriskt och måste väljas."
+
+#: includes/admin/class-export-wizard.php:491
+msgid "The Parent ID field is required for products with variations."
+msgstr "Förälder-ID-fältet krävs för produkter med variationer."
+
+# Additional strings from JavaScript
+#: includes/translations.php:10
+msgid "Loading..."
+msgstr "Laddar..."
+
+#: includes/translations.php:11
+msgid "Please select a data source first"
+msgstr "Välj en datakälla först"
+
+#: includes/translations.php:12
+msgid "Failed to load fields"
+msgstr "Kunde inte ladda fält"
+
+#: includes/translations.php:13
+msgid "Please select at least one field to export"
+msgstr "Välj minst ett fält att exportera"
+
+#: includes/translations.php:14
+msgid "No data found"
+msgstr "Ingen data hittades"
+
+#: includes/translations.php:15
+msgid "Error fetching data fields"
+msgstr "Fel vid hämtning av datafält"
+
+#: includes/translations.php:16
+msgid "Error fetching preview data"
+msgstr "Fel vid hämtning av förhandsgranskningsdata"
+
+#: includes/translations.php:17
+msgid "Please enter a valid date in YYYY-MM-DD format"
+msgstr "Ange ett giltigt datum i formatet ÅÅÅÅ-MM-DD"
+
+#: includes/translations.php:18
+msgid "From date cannot be later than To date"
+msgstr "Från-datum kan inte vara senare än Till-datum"
+
+#: includes/translations.php:19
+msgid "Processing"
+msgstr "Bearbetar"
+
+#: includes/translations.php:20
+msgid "format:"
+msgstr "format:"
+
+#: includes/translations.php:21
+msgid "complete"
+msgstr "klar"
+
+#: includes/translations.php:22
+msgid "Download"
+msgstr "Ladda ner"
+
+#: includes/translations.php:23
+msgid "Export completed"
+msgstr "Export slutförd"
+
+#: includes/translations.php:24
+msgid "Export Again"
+msgstr "Exportera igen"
+
+#: includes/translations.php:25
+msgid "Initializing export..."
+msgstr "Initierar export..."
+
+#: includes/translations.php:26
+msgid "Error processing export"
+msgstr "Fel vid bearbetning av export"
+
+#: includes/translations.php:27
+msgid "Loading fields..."
+msgstr "Laddar fält..."
+
+#: includes/translations.php:28
+msgid "Loading meta fields..."
+msgstr "Laddar metafält..."
+
+#: includes/translations.php:29
+msgid "Loading taxonomy fields..."
+msgstr "Laddar taxonomifält..."
+
+#: includes/translations.php:30
+msgid "Loading preview data..."
+msgstr "Laddar förhandsgranskningsdata..."
+
+#: includes/translations.php:31
+msgid "Please complete the export configuration to see a summary"
+msgstr "Slutför exportkonfigurationen för att se en sammanfattning"
+
+#: includes/translations.php:32
+msgid "Custom (incomplete)"
+msgstr "Anpassad (ofullständig)"
+
+#: includes/translations.php:33
+msgid "Edit Column Name"
+msgstr "Redigera kolumnnamn"
+
+#: includes/translations.php:34
+msgid "Enter a new name for the"
+msgstr "Ange ett nytt namn för"
+
+#: includes/translations.php:35
+msgid "column"
+msgstr "kolumn"
+
+#: includes/translations.php:36
+msgid "Enter a new name for the \"%s\" column:"
+msgstr "Ange ett nytt namn för kolumnen \"%s\":"
+
+#: includes/translations.php:37
+msgid "Short Description"
+msgstr "Kort beskrivning"
+
+#: includes/translations.php:38
+msgid "Save"
+msgstr "Spara"
+
+#: includes/translations.php:39
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: includes/translations.php:41
+msgid "Order Date Range"
+msgstr "Orderdatumintervall"
+
+# Export Summary
+#: includes/translations.php:44
+msgid "Export Name:"
+msgstr "Exportnamn:"
+
+#: includes/translations.php:45
+msgid "Format:"
+msgstr "Format:"
+
+#: includes/translations.php:46
+msgid "Formats:"
+msgstr "Format:"
+
+#: includes/translations.php:47
+msgid "Data Source:"
+msgstr "Datakälla:"
+
+#: includes/translations.php:48
+msgid "Product Types:"
+msgstr "Produkttyper:"
+
+#: includes/translations.php:49
+msgid "Product Statuses:"
+msgstr "Produktstatusar:"
+
+#: includes/translations.php:50
+msgid "User Roles:"
+msgstr "Användarroller:"
+
+#: includes/translations.php:51
+msgid "Registration Date:"
+msgstr "Registreringsdatum:"
+
+#: includes/translations.php:52
+msgid "Order Statuses:"
+msgstr "Orderstatusar:"
+
+#: includes/translations.php:53
+msgid "Order Date:"
+msgstr "Orderdatum:"
+
+#: includes/translations.php:54
+msgid "Selected Fields:"
+msgstr "Valda fält:"
+
+#: includes/translations.php:55
+msgid "Export Summary"
+msgstr "Exportsammanfattning"
+
+#: includes/translations.php:58
+msgid "product data"
+msgstr "produktdata"
+
+#: includes/translations.php:59
+msgid "user data"
+msgstr "användardata"
+
+#: includes/translations.php:60
+msgid "order data"
+msgstr "orderdata"
+
+#: includes/translations.php:63
+msgid "(required)"
+msgstr "(obligatoriskt)"
+
+# Product Export Mode
+#: includes/translations.php:66
+msgid "Select which products to export"
+msgstr "Välj vilka produkter som ska exporteras"
+
+#: includes/translations.php:67
+msgid "All Products"
+msgstr "Alla produkter"
+
+#: includes/translations.php:68
+msgid "Last Modified Products"
+msgstr "Senast uppdaterade produkter"
+
+#: includes/translations.php:69
+msgid "New Products"
+msgstr "Nya produkter"
+
+#: includes/translations.php:70
+msgid "Time period"
+msgstr "Tidsperiod"
+
+#: includes/translations.php:71
+msgid "Last 60 Days"
+msgstr "Senaste 60 dagarna"
+
+#: includes/translations.php:76
+msgid "From date"
+msgstr "Från"
+
+#: includes/translations.php:77
+msgid "To date"
+msgstr "Till"
+
+# ARIA labels
+#: includes/translations.php:80
+msgid "Select export time period"
+msgstr "Välj tidsperiod för export"
+
+#: includes/translations.php:81
+msgid "Select product export mode"
+msgstr "Välj läge för produktexport"
+
+#: includes/translations.php:82
+msgid "No products found for the selected filters."
+msgstr "Inga produkter hittades för valda filter."
+
+#: includes/translations.php:83
+msgid "Try selecting a different date range."
+msgstr "Försök välja ett annat datumintervall."
+
+#: includes/translations.php:84
+msgid "Try expanding your date range or adjusting your filters."
+msgstr "Försök att utöka ditt datumintervall eller justera dina filter."
+
+#: includes/translations.php:85
+msgid "Please select both From and To dates for the product date range"
+msgstr "Vänligen välj både Från- och Till-datum för produktens datumintervall"
+
+#: includes/translations.php:86
+msgid "Please ensure the From date is not later than the To date"
+msgstr "Se till att från-datumet inte är senare än till-datumet"
+
+#: includes/translations.php:89
+msgid "productsDataSource"
+msgstr "Produkter"
+
+#: includes/translations.php:90
+msgid "ordersDataSource"
+msgstr "Beställningar"
+
+#: includes/translations.php:91
+msgid "usersDataSource"
+msgstr "Användare"
+
+#: includes/translations.php:92
+msgid "fieldsSelected"
+msgstr "valda fält"
+
+#: includes/translations.php:93
+msgid "allTypes"
+msgstr "Alla typer"
+
+#: includes/translations.php:94
+msgid "allStatuses"
+msgstr "Alla statusar"
+
+#: includes/translations.php:95
+msgid "allFields"
+msgstr "Alla fält"
+
+#: includes/translations.php:96
+msgid "to"
+msgstr "till"
+
+#: includes/translations.php:97
+msgid "fields"
+msgstr "fält"
+
+#: includes/translations.php:98
+msgid "All available fields"
+msgstr "Alla tillgängliga fält"
+
+#: includes/translations.php:99
+msgid "No fields available"
+msgstr "Inga fält tillgängliga"
+
+#: includes/translations.php:100
+msgid "Error loading fields. Please try again or contact support."
+msgstr "Fel vid laddning av fält. Vänligen försök igen eller kontakta support."
+
+#: includes/translations.php:101
+msgid "Error loading meta fields."
+msgstr "Fel vid inläsning av metafält."
+
+#: includes/translations.php:102
+msgid "Error loading taxonomy fields."
+msgstr "Fel vid inläsning av taxonomifält."
+
+# Export Summary
+#: includes/translations.php:103
+msgid "Export Error"
+msgstr "Fel vid export"
+
+#: includes/translations.php:104
+msgid "Unknown error"
+msgstr "Okänt fel"
+
+#: includes/translations.php:105
+msgid "Error: Invalid response data"
+msgstr "Felmeddelande: Ogiltiga svarsdata"
+
+# Common UI elements
+#: includes/translations.php:106
+msgid "OK"
+msgstr "OK"
+
+#: includes/translations.php:109
+msgid "Debug info"
+msgstr "Felsök"
+
+#: includes/translations.php:110
+msgid "Debug mode"
+msgstr "Felsökningsläge"
+
+#: includes/translations.php:111
+msgid "Debug info logged to console. Check browser developer tools (F12)."
+msgstr ""
+"Felsökningsinformation loggas till konsolen. Se webbläsarens "
+"utvecklingsverktyg (F12)."
+
+#: includes/translations.php:112
+msgid "Debug mode is enabled via URL parameter."
+msgstr "Felsökningsläget aktiveras via URL-parametern."
+
+#: includes/translations.php:113
+msgid "To disable debug mode, remove \"?ywce_debug=1\" from the URL."
+msgstr ""
+"Om du vill inaktivera felsökningsläget tar du bort ”?ywce_debug=1” från "
+"URL:en."
+
+#: includes/translations.php:114
+msgid "Debug mode is enabled because this is a development environment."
+msgstr "Felsökningsläget är aktiverat eftersom detta är en utvecklingsmiljö."
+
+#: includes/translations.php:115
+msgid "Hostname:"
+msgstr "Värdnamn:"
+
+#: includes/translations.php:116
+msgid "[Object]"
+msgstr "[Object]"
+
+#: includes/translations.php:117
+msgid "ID field is required."
+msgstr "ID-fältet är obligatoriskt."
+
+#: includes/translations.php:118
+msgid "Parent ID field is required for products with variations."
+msgstr "Förälder-ID-fältet krävs för produkter med variationer."
+
+#: includes/translations.php:120
+msgid "HTTP error! Status:"
+msgstr "HTTP-fel! Status:"
+
+#: includes/translations.php:121
+msgid "Failed to parse JSON response"
+msgstr "Misslyckades med att tolka JSON-svar"
+
+#: includes/translations.php:122
+msgid "No data found. Please check your selection."
+msgstr "Inga data hittades. Vänligen kontrollera ditt val."
+
+#: includes/translations.php:123
+msgid "An error occurred while fetching preview data."
+msgstr "Ett fel inträffade vid hämtning av förhandsgranskningsdata."
+
+#: includes/translations.php:124
+msgid ""
+"Please select at least one field, meta field, or taxonomy before proceeding."
+msgstr ""
+"Välj minst ett fält, ett metafält eller en taxonomi innan du fortsätter."
+
+#: includes/translations.php:125
+msgid "Invalid data source"
+msgstr "Ogiltig datakälla"
+
+#: includes/translations.php:126
+msgid "Error fetching product types:"
+msgstr "Fel vid hämtning av produkttyper:"
+
+#: includes/translations.php:127
+msgid "AJAX error fetching product types:"
+msgstr "AJAX-fel vid hämtning av produkttyper:"
+
+#: includes/translations.php:128
+msgid "Error fetching user roles:"
+msgstr "Fel vid hämtning av användarroller:"
+
+#: includes/translations.php:129
+msgid "AJAX error fetching user roles:"
+msgstr "AJAX-fel vid hämtning av användarroller:"
+
+#: includes/translations.php:130
+msgid "Error fetching order statuses:"
+msgstr "Fel vid hämtning av orderstatusar:"
+
+#: includes/translations.php:131
+msgid "AJAX error fetching order statuses:"
+msgstr "AJAX-fel vid hämtning av orderstatusar:"
+
+#: includes/translations.php:132
+msgid "Please enter an export name"
+msgstr "Vänligen ange ett exportnamn"
+
+#: includes/translations.php:133
+msgid "Please select at least one export format"
+msgstr "Vänligen välj minst ett exportformat"
+
+#: includes/translations.php:134
+msgid "Export completed successfully"
+msgstr "Export slutförd"
+
+# Export Summary
+#: includes/translations.php:135
+msgid "Export failed"
+msgstr "Export misslyckades"
+
+#: includes/translations.php:136
+msgid "Processing batch"
+msgstr "Bearbetning av batch"
+
+#: includes/translations.php:137
+msgid "of"
+msgstr "av"
+
+#: includes/translations.php:138
+msgid "Processed"
+msgstr "Bearbetad"
+
+#: includes/translations.php:139
+msgid "items"
+msgstr "artiklar"
+
+# Export Summary
+#: includes/translations.php:140
+msgid "Export progress:"
+msgstr "Exportförlopp:"
+
+#: includes/translations.php:141
+msgid "Download failed"
+msgstr "Nedladdning misslyckades"
+
+#: includes/translations.php:142
+msgid "File not found"
+msgstr "Filen hittades inte"
+
+#: includes/translations.php:143
+msgid "Invalid file format"
+msgstr "Ogiltigt filformat"
+
+#: includes/translations.php:144
+msgid "Invalid security token"
+msgstr "Ogiltig säkerhetstoken"
+
+#: includes/translations.php:40 includes/admin/class-export-wizard.php:32
+msgid "Registration Date Range"
+msgstr "Datum för registrering"
+
+#: includes/translations.php:45
+msgid "Format Completed:"
+msgstr "Slutförde:"
+
+#~ msgid ""
+#~ "Yeti WooCommerce Export requires PHP 8.0 or higher. Please upgrade your "
+#~ "PHP version or contact your hosting provider."
+#~ msgstr ""
+#~ "Yeti WooCommerce Export kräver PHP 8.0 eller högre. Uppgradera din PHP-"
+#~ "version eller kontakta din hostingleverantör."
+
+#~ msgid ""
+#~ "Yeti WooCommerce Export requires Composer dependencies to be installed. "
+#~ "Please run the update-dependencies-php8.0 script included with the plugin."
+#~ msgstr ""
+#~ "Yeti WooCommerce Export kräver att Composer-beroenden installeras. Kör "
+#~ "skriptet update-dependencies-php8.0 som ingår."
+
+#~ msgid ""
+#~ "Yeti WooCommerce Export requires WooCommerce to be installed and active."
+#~ msgstr ""
+#~ "Yeti WooCommerce Export kräver att WooCommerce är installerat och aktivt."
+
+#~ msgid ""
+#~ "Yeti WooCommerce Export is missing required dependencies. Some export "
+#~ "formats may not be available. Please run the update-dependencies-php8.0 "
+#~ "script included with the plugin."
+#~ msgstr ""
+#~ "Yeti WooCommerce Export saknar nödvändiga beroenden. Vissa exportformat "
+#~ "kanske inte är tillgängliga."
+
+#~ msgid "Error:"
+#~ msgstr "Fel:"
+
+#~ msgid "Error message:"
+#~ msgstr "Felmeddelande:"
+
+#~ msgid "Close"
+#~ msgstr "Stäng"
+
+#~ msgid "Edit column name"
+#~ msgstr "Redigera kolumnnamn"
+
+# Export Summary
+#~ msgid "Export Requirement"
+#~ msgstr "Krav för export"
+
+#~ msgid "Click the download links above to download your files"
+#~ msgstr "Klicka på nedladdningslänkarna ovan för att ladda ner dina filer"
+
+#~ msgid "All"
+#~ msgstr "Alla"
+
+# Product types
+#~ msgid "Simple Product"
+#~ msgstr "Enkel produkt"
+
+#~ msgid "Variable Product"
+#~ msgstr "Variabel produkt"
+
+#~ msgid "Grouped Product"
+#~ msgstr "Grupperad produkt"
+
+#~ msgid "External Product"
+#~ msgstr "Extern produkt"
+
+# User roles
+#~ msgid "Administrator"
+#~ msgstr "Administratör"
+
+#~ msgid "Editor"
+#~ msgstr "Redaktör"
+
+#~ msgid "Author"
+#~ msgstr "Författare"
+
+#~ msgid "Contributor"
+#~ msgstr "Medarbetare"
+
+#~ msgid "Subscriber"
+#~ msgstr "Prenumerant"
+
+#~ msgid "Customer"
+#~ msgstr "Kund"
+
+# Order statuses
+#~ msgid "Pending payment"
+#~ msgstr "Väntar på betalning"
+
+#~ msgid "On hold"
+#~ msgstr "Pausad"
+
+#~ msgid "Completed"
+#~ msgstr "Slutförd"
+
+#~ msgid "Cancelled"
+#~ msgstr "Avbruten"
+
+#~ msgid "Refunded"
+#~ msgstr "Återbetalad"
+
+#~ msgid "Failed"
+#~ msgstr "Misslyckad"
+
+#~ msgid "Edit"
+#~ msgstr "Redigera"
+
+#~ msgid "Delete"
+#~ msgstr "Ta bort"
+
+#~ msgid "Add"
+#~ msgstr "Lägg till"
+
+#~ msgid "Remove"
+#~ msgstr "Ta bort"
+
+#~ msgid "Yes"
+#~ msgstr "Ja"
+
+#~ msgid "No"
+#~ msgstr "Nej"
+
+#~ msgid "Success"
+#~ msgstr "Lyckades"
+
+#~ msgid "Warning"
+#~ msgstr "Varning"
+
+#~ msgid "Info"
+#~ msgstr "Information"
+
+#~ msgid "Please wait..."
+#~ msgstr "Vänta..."
+
+#~ msgid "Exporting..."
+#~ msgstr "Exporterar..."
+
+# Export file types
+#~ msgid "Download CSV"
+#~ msgstr "Ladda ner CSV"
+
+#~ msgid "Download XLSX"
+#~ msgstr "Ladda ner XLSX"
+
+#~ msgid "Download XML"
+#~ msgstr "Ladda ner XML"
+
+#~ msgid "Download JSON"
+#~ msgstr "Ladda ner JSON"
+
+#~ msgid "Products Data Source"
+#~ msgstr "Produkter"
+
+#~ msgid "Orders Data Source"
+#~ msgstr "Beställningar"
+
+#~ msgid "Users Data Source"
+#~ msgstr "Användare"
+
+#~ msgid "Selected Fields"
+#~ msgstr "Valda fält"
+
+#~ msgid "fields selected"
+#~ msgstr "valda fält"
+
+#~ msgid "Data Source"
+#~ msgstr "Datakälla"
+
+#~ msgid "Product Types"
+#~ msgstr "Produkttyper"
+
+#~ msgid "Product Statuses"
+#~ msgstr "Produktstatusar"
+
+#~ msgid "Selected fields:"
+#~ msgstr "Valda fält:"
+
+#~ msgid "Field count:"
+#~ msgstr "Antal fält:"
+
+#~ msgid "Date Range:"
+#~ msgstr "Datumintervall"
+
+#~ msgid "Custom Date Range"
+#~ msgstr "Anpassad tidsintervall"
+
+#~ msgid "Last Modified"
+#~ msgstr "Senast uppdaterade"
+
+#~ msgid "New Items"
+#~ msgstr "Nya produkter"
+
+# Export Summary
+#~ msgid "Export Type:"
+#~ msgstr "Exporttyp:"
+
+#~ msgid "Please select at least one field"
+#~ msgstr "Välj minst ett fält att exportera"
+
+#~ msgid "Selected fields will appear here"
+#~ msgstr "Valda fält visas här"
+
+#~ msgid "Click fields on the left to select them"
+#~ msgstr "Klicka på fält till vänster för att välja dem"
+
+#~ msgid "Drag fields to reorder them"
+#~ msgstr "Dra fälten för att ordna om dem"
+
+#~ msgid "Custom Fields"
+#~ msgstr "Metafält"
+
+#~ msgid "Remove Field"
+#~ msgstr "Ta bort"
+
+#~ msgid "Edit Field Label"
+#~ msgstr "Ändra fältets etikett"
+
+#~ msgid "Move Field Up"
+#~ msgstr "Flytta upp fältet"
+
+#~ msgid "Move Field Down"
+#~ msgstr "Flytta ner fältet"
+
+#~ msgid "Preparing export..."
+#~ msgstr "Förbereder export..."
+
+#~ msgid "Exporting data..."
+#~ msgstr "Exporterar..."
+
+#~ msgid "Finalizing export..."
+#~ msgstr "Slutför export..."
+
+#~ msgid "Select date range"
+#~ msgstr "Välj datumintervall"
+
+#~ msgid "Apply date range"
+#~ msgstr "Använd datumintervall"
+
+#~ msgid "Clear date range"
+#~ msgstr "Rensa datumintervall"
+
+#~ msgid "Selected Fields Summary"
+#~ msgstr "Sammanfattning"
+
+#~ msgid "Total fields selected:"
+#~ msgstr "Totalt antal:"
+
+#~ msgid "Standard fields:"
+#~ msgstr "Standardfält:"
+
+#~ msgid "Custom fields:"
+#~ msgstr "Anpassade fält:"
+
+#~ msgid "Taxonomy fields:"
+#~ msgstr "Taxonomifält:"
+
+#~ msgid "Meta fields:"
+#~ msgstr "Metafält:"
+
+#~ msgid "Data Source: Products"
+#~ msgstr "Produkter"
+
+#~ msgid "Data Source: Orders"
+#~ msgstr "Beställningar"
+
+#~ msgid "Data Source: Users"
+#~ msgstr "Användare"
+
+#~ msgid "Format"
+#~ msgstr "Format:"
+
+#~ msgid "field"
+#~ msgid_plural "fields"
+#~ msgstr[0] "fält"
+#~ msgstr[1] "fält"
+
+# Data Source Messages
+#~ msgid ""
+#~ "No data available for export. Please add some products, users, or orders "
+#~ "first."
+#~ msgstr ""
+#~ "Ingen data tillgänglig för export. Lägg till några produkter, användare "
+#~ "eller order först."
+
+#~ msgid "Registration Date"
+#~ msgstr "Registreringsdatum"
+
+#~ msgid "Cancel Export"
+#~ msgstr "Avbryt export"
+
+#~ msgid "Please enter a valid date"
+#~ msgstr "Ange ett giltigt datum i formatet ÅÅÅÅ-MM-DD"
+
+#~ msgid "Order Date"
+#~ msgstr "Orderdatum"
+
+#~ msgid "Registration Date Range:"
+#~ msgstr "Registreringsdatumintervall:"

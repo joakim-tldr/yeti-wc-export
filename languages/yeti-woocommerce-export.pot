@@ -1,0 +1,693 @@
+# Copyright (C) 2024 Yeti Web
+# This file is distributed under the GPL v2 or later.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Yeti WooCommerce Export 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/yeti-woocommerce-export\n"
+"POT-Creation-Date: 2025-03-10 11:18+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+"X-Domain: yeti-woocommerce-export\n"
+
+#: includes/admin/class-export-wizard.php:22
+msgid "Export Wizard"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:25
+msgid "Export"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:37
+msgid "Select Data Source"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:47
+msgid "Debug"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:61
+msgid "Products"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:73
+msgid "Users"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:85
+msgid "Orders"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:107
+msgid "Choose the "
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:107
+msgid " to export"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:113
+msgid "Standard Fields"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:118
+msgid "Select All"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:119
+msgid "Deselect All"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:128
+msgid "Meta Fields"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:143
+msgid "Taxonomy Fields"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:170
+msgid "Preview"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:182
+msgid "Export Configuration"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:187
+msgid "Export Settings"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:193
+msgid "Name to identify this export"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:195
+msgid "Enter export name"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:196
+msgid "Generate"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:202
+msgid "Format for your export file"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:222
+msgid "Product Filters"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:228
+msgid "Filter by product type"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:230
+msgid "All Types"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:238
+msgid "Filter by product status"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:240
+msgid "All Statuses"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:241
+msgid "Published"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:242
+msgid "Draft"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:243
+msgid "Pending"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:244
+msgid "Private"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:254
+msgid "User Filters"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:260
+msgid "Filter by user role"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:262
+msgid "All Roles"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:270
+msgid "Filter by registration date"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:272
+msgid "All Time"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:273
+msgid "Last 30 Days"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:274
+msgid "Last 90 Days"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:275
+msgid "Last 180 Days"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:276
+msgid "Custom Range"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:285
+msgid "From"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:289
+msgid "To"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:302
+msgid "Order Filters"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:308
+msgid "Filter by order status"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:318
+msgid "Filter by order date"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:363
+msgid "Click the download links above to download your files."
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:368
+msgid "Start Export"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:376
+msgid "Previous"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:377
+msgid "Next Step"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:394
+msgid "Missing source parameter"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:465
+msgid "Invalid source type"
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:483
+msgid "The ID field is required and must be selected."
+msgstr ""
+
+#: includes/admin/class-export-wizard.php:491
+msgid "The Parent ID field is required for products with variations."
+msgstr ""
+
+#: includes/translations.php:10
+msgid "Loading..."
+msgstr ""
+
+#: includes/translations.php:11
+msgid "Please select a data source first"
+msgstr ""
+
+#: includes/translations.php:12
+msgid "Failed to load fields"
+msgstr ""
+
+#: includes/translations.php:13
+msgid "Please select at least one field to export"
+msgstr ""
+
+#: includes/translations.php:14
+msgid "No data found"
+msgstr ""
+
+#: includes/translations.php:15
+msgid "Error fetching data fields"
+msgstr ""
+
+#: includes/translations.php:16
+msgid "Error fetching preview data"
+msgstr ""
+
+#: includes/translations.php:17
+msgid "Please enter a valid date in YYYY-MM-DD format"
+msgstr ""
+
+#: includes/translations.php:18
+msgid "From date cannot be later than To date"
+msgstr ""
+
+#: includes/translations.php:19
+msgid "Processing"
+msgstr ""
+
+#: includes/translations.php:20
+msgid "format:"
+msgstr ""
+
+#: includes/translations.php:21
+msgid "complete"
+msgstr ""
+
+#: includes/translations.php:22
+msgid "Download"
+msgstr ""
+
+#: includes/translations.php:23
+msgid "Export completed"
+msgstr ""
+
+#: includes/translations.php:24
+msgid "Export Again"
+msgstr ""
+
+#: includes/translations.php:25
+msgid "Initializing export..."
+msgstr ""
+
+#: includes/translations.php:26
+msgid "Error processing export"
+msgstr ""
+
+#: includes/translations.php:27
+msgid "Loading fields..."
+msgstr ""
+
+#: includes/translations.php:28
+msgid "Loading meta fields..."
+msgstr ""
+
+#: includes/translations.php:29
+msgid "Loading taxonomy fields..."
+msgstr ""
+
+#: includes/translations.php:30
+msgid "Loading preview data..."
+msgstr ""
+
+#: includes/translations.php:31
+msgid "Please complete the export configuration to see a summary"
+msgstr ""
+
+#: includes/translations.php:32
+msgid "Custom (incomplete)"
+msgstr ""
+
+#: includes/translations.php:33
+msgid "Edit Column Name"
+msgstr ""
+
+#: includes/translations.php:34
+msgid "Enter a new name for the"
+msgstr ""
+
+#: includes/translations.php:35
+msgid "column"
+msgstr ""
+
+#: includes/translations.php:36
+msgid "Enter a new name for the \"%s\" column:"
+msgstr ""
+
+#: includes/translations.php:37
+msgid "Short Description"
+msgstr ""
+
+#: includes/translations.php:38
+msgid "Save"
+msgstr ""
+
+#: includes/translations.php:39
+msgid "Cancel"
+msgstr ""
+
+#: includes/translations.php:41
+msgid "Order Date Range"
+msgstr ""
+
+#: includes/translations.php:44
+msgid "Export Name:"
+msgstr ""
+
+#: includes/translations.php:45
+msgid "Format:"
+msgstr ""
+
+#: includes/translations.php:46
+msgid "Formats:"
+msgstr ""
+
+#: includes/translations.php:47
+msgid "Data Source:"
+msgstr ""
+
+#: includes/translations.php:48
+msgid "Product Types:"
+msgstr ""
+
+#: includes/translations.php:49
+msgid "Product Statuses:"
+msgstr ""
+
+#: includes/translations.php:50
+msgid "User Roles:"
+msgstr ""
+
+#: includes/translations.php:51
+msgid "Registration Date:"
+msgstr ""
+
+#: includes/translations.php:52
+msgid "Order Statuses:"
+msgstr ""
+
+#: includes/translations.php:53
+msgid "Order Date:"
+msgstr ""
+
+#: includes/translations.php:54
+msgid "Selected Fields:"
+msgstr ""
+
+#: includes/translations.php:55
+msgid "Export Summary"
+msgstr ""
+
+#: includes/translations.php:58
+msgid "product data"
+msgstr ""
+
+#: includes/translations.php:59
+msgid "user data"
+msgstr ""
+
+#: includes/translations.php:60
+msgid "order data"
+msgstr ""
+
+#: includes/translations.php:63
+msgid "(required)"
+msgstr ""
+
+#: includes/translations.php:66
+msgid "Select which products to export"
+msgstr ""
+
+#: includes/translations.php:67
+msgid "All Products"
+msgstr ""
+
+#: includes/translations.php:68
+msgid "Last Modified Products"
+msgstr ""
+
+#: includes/translations.php:69
+msgid "New Products"
+msgstr ""
+
+#: includes/translations.php:70
+msgid "Time period"
+msgstr ""
+
+#: includes/translations.php:71
+msgid "Last 60 Days"
+msgstr ""
+
+#: includes/translations.php:76
+msgid "From date"
+msgstr ""
+
+#: includes/translations.php:77
+msgid "To date"
+msgstr ""
+
+#: includes/translations.php:80
+msgid "Select export time period"
+msgstr ""
+
+#: includes/translations.php:81
+msgid "Select product export mode"
+msgstr ""
+
+#: includes/translations.php:82
+msgid "No products found for the selected filters."
+msgstr ""
+
+#: includes/translations.php:83
+msgid "Try selecting a different date range."
+msgstr ""
+
+#: includes/translations.php:84
+msgid "Try expanding your date range or adjusting your filters."
+msgstr ""
+
+#: includes/translations.php:85
+msgid "Please select both From and To dates for the product date range"
+msgstr ""
+
+#: includes/translations.php:86
+msgid "Please ensure the From date is not later than the To date"
+msgstr ""
+
+#: includes/translations.php:89
+msgid "productsDataSource"
+msgstr ""
+
+#: includes/translations.php:90
+msgid "ordersDataSource"
+msgstr ""
+
+#: includes/translations.php:91
+msgid "usersDataSource"
+msgstr ""
+
+#: includes/translations.php:92
+msgid "fieldsSelected"
+msgstr ""
+
+#: includes/translations.php:93
+msgid "allTypes"
+msgstr ""
+
+#: includes/translations.php:94
+msgid "allStatuses"
+msgstr ""
+
+#: includes/translations.php:95
+msgid "allFields"
+msgstr ""
+
+#: includes/translations.php:96
+msgid "to"
+msgstr ""
+
+#: includes/translations.php:97
+msgid "fields"
+msgstr ""
+
+#: includes/translations.php:98
+msgid "All available fields"
+msgstr ""
+
+#: includes/translations.php:99
+msgid "No fields available"
+msgstr ""
+
+#: includes/translations.php:100
+msgid "Error loading fields. Please try again or contact support."
+msgstr ""
+
+#: includes/translations.php:101
+msgid "Error loading meta fields."
+msgstr ""
+
+#: includes/translations.php:102
+msgid "Error loading taxonomy fields."
+msgstr ""
+
+#: includes/translations.php:103
+msgid "Export Error"
+msgstr ""
+
+#: includes/translations.php:104
+msgid "Unknown error"
+msgstr ""
+
+#: includes/translations.php:105
+msgid "Error: Invalid response data"
+msgstr "" 
+
+#: includes/translations.php:106
+msgid "OK"
+msgstr ""
+
+#: includes/translations.php:109
+msgid "Debug info"
+msgstr ""
+
+#: includes/translations.php:110
+msgid "Debug mode"
+msgstr ""
+
+#: includes/translations.php:111
+msgid "Debug info logged to console. Check browser developer tools (F12)."
+msgstr ""
+
+#: includes/translations.php:112
+msgid "Debug mode is enabled via URL parameter."
+msgstr ""
+
+#: includes/translations.php:113
+msgid "To disable debug mode, remove \"?ywce_debug=1\" from the URL."
+msgstr ""
+
+#: includes/translations.php:114
+msgid "Debug mode is enabled because this is a development environment."
+msgstr ""
+
+#: includes/translations.php:115
+msgid "Hostname:"
+msgstr ""
+
+#: includes/translations.php:116
+msgid "[Object]"
+msgstr ""
+
+#: includes/translations.php:117
+msgid "ID field is required."
+msgstr ""
+
+#: includes/translations.php:118
+msgid "Parent ID field is required for products with variations."
+msgstr "" 
+
+#: includes/translations.php:120
+msgid "HTTP error! Status:"
+msgstr ""
+
+#: includes/translations.php:121
+msgid "Failed to parse JSON response"
+msgstr ""
+
+#: includes/translations.php:122
+msgid "No data found. Please check your selection."
+msgstr ""
+
+#: includes/translations.php:123
+msgid "An error occurred while fetching preview data."
+msgstr ""
+
+#: includes/translations.php:124
+msgid "Please select at least one field, meta field, or taxonomy before proceeding."
+msgstr ""
+
+#: includes/translations.php:125
+msgid "Invalid data source"
+msgstr ""
+
+#: includes/translations.php:126
+msgid "Error fetching product types:"
+msgstr ""
+
+#: includes/translations.php:127
+msgid "AJAX error fetching product types:"
+msgstr ""
+
+#: includes/translations.php:128
+msgid "Error fetching user roles:"
+msgstr ""
+
+#: includes/translations.php:129
+msgid "AJAX error fetching user roles:"
+msgstr ""
+
+#: includes/translations.php:130
+msgid "Error fetching order statuses:"
+msgstr ""
+
+#: includes/translations.php:131
+msgid "AJAX error fetching order statuses:"
+msgstr ""
+
+#: includes/translations.php:132
+msgid "Please enter an export name"
+msgstr ""
+
+#: includes/translations.php:133
+msgid "Please select at least one export format"
+msgstr ""
+
+#: includes/translations.php:134
+msgid "Export completed successfully"
+msgstr ""
+
+#: includes/translations.php:135
+msgid "Export failed"
+msgstr ""
+
+#: includes/translations.php:136
+msgid "Processing batch"
+msgstr ""
+
+#: includes/translations.php:137
+msgid "of"
+msgstr ""
+
+#: includes/translations.php:138
+msgid "Processed"
+msgstr ""
+
+#: includes/translations.php:139
+msgid "items"
+msgstr ""
+
+#: includes/translations.php:140
+msgid "Export progress:"
+msgstr ""
+
+#: includes/translations.php:141
+msgid "Download failed"
+msgstr ""
+
+#: includes/translations.php:142
+msgid "File not found"
+msgstr ""
+
+#: includes/translations.php:143
+msgid "Invalid file format"
+msgstr ""
+
+#: includes/translations.php:144
+msgid "Invalid security token"
+msgstr "" 
+
+#: includes/translations.php:40
+#: includes/admin/class-export-wizard.php:32
+msgid "Registration Date Range"
+msgstr "" 
+
+#: includes/translations.php:45
+msgid "Format Completed:"
+msgstr "" 
