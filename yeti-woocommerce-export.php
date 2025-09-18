@@ -85,12 +85,6 @@ class Yeti_WooCommerce_Export {
      * Include required files
      */
 	   	private function includes(): void {
-		// Core legacy classes still loaded directly
-		require_once YWCE_PLUGIN_DIR . 'includes/helpers/class-data-helper.php';
-		require_once YWCE_PLUGIN_DIR . 'includes/helpers/class-format-handler.php';
-		require_once YWCE_PLUGIN_DIR . 'includes/exporters/class-exporter.php';
-		require_once YWCE_PLUGIN_DIR . 'includes/admin/class-export-wizard.php';
-
 		// Load namespaced classes without relying on Composer (fallback autoload)
 		// Support
 		require_once YWCE_PLUGIN_DIR . 'includes/Support/Filesystem.php';
@@ -103,6 +97,9 @@ class Yeti_WooCommerce_Export {
 		require_once YWCE_PLUGIN_DIR . 'includes/Data/Store/ProductStore.php';
 		require_once YWCE_PLUGIN_DIR . 'includes/Data/Store/UserStore.php';
 		require_once YWCE_PLUGIN_DIR . 'includes/Data/Store/OrderStore.php';
+		// New helpers (namespaced, now primary)
+		require_once YWCE_PLUGIN_DIR . 'includes/Data/Helper/Helper.php';
+		require_once YWCE_PLUGIN_DIR . 'includes/Data/Helper/Format.php';
 
 		// Writers
 		require_once YWCE_PLUGIN_DIR . 'includes/Export/Writer/FormatWriterInterface.php';
@@ -110,12 +107,15 @@ class Yeti_WooCommerce_Export {
 		require_once YWCE_PLUGIN_DIR . 'includes/Export/Writer/JsonWriter.php';
 		require_once YWCE_PLUGIN_DIR . 'includes/Export/Writer/XmlWriter.php';
 		require_once YWCE_PLUGIN_DIR . 'includes/Export/Writer/XlsxWriter.php';
+		// New structure primary classes
+		require_once YWCE_PLUGIN_DIR . 'includes/Export/Export.php';
+		require_once YWCE_PLUGIN_DIR . 'includes/Export/Wizard/ExportWizard.php';
 
-		// Backward compatibility aliases for legacy global class names
-		if ( class_exists( YWCE_Data_Helper::class ) && !class_exists('YWCE_Data_Helper')) { class_alias( YWCE_Data_Helper::class, 'YWCE_Data_Helper'); }
-		if ( class_exists( YWCE_Format_Handler::class ) && !class_exists('YWCE_Format_Handler')) { class_alias( YWCE_Format_Handler::class, 'YWCE_Format_Handler'); }
-		if ( class_exists( YWCE_Exporter::class ) && !class_exists('YWCE_Exporter')) { class_alias( YWCE_Exporter::class, 'YWCE_Exporter'); }
-		if ( class_exists( YWCE_Export_Wizard::class ) && !class_exists('YWCE_Export_Wizard')) { class_alias( YWCE_Export_Wizard::class, 'YWCE_Export_Wizard'); }
+		// Backward compatibility aliases for legacy class names mapping to new implementations
+		if ( class_exists( \YWCE\Export\Export::class ) ) { class_alias( \YWCE\Export\Export::class, '\\YWCE\\YWCE_Exporter' ); }
+		if ( class_exists( \YWCE\Data\Helper\Helper::class ) ) { class_alias( \YWCE\Data\Helper\Helper::class, '\\YWCE\\YWCE_Data_Helper' ); }
+		if ( class_exists( \YWCE\Data\Helper\Format::class ) ) { class_alias( \YWCE\Data\Helper\Format::class, '\\YWCE\\YWCE_Format_Handler' ); }
+		if ( class_exists( \YWCE\Export\Wizard\ExportWizard::class ) ) { class_alias( \YWCE\Export\Wizard\ExportWizard::class, '\\YWCE\\YWCE_Export_Wizard' ); }
 	}
 
     /**
@@ -132,8 +132,8 @@ class Yeti_WooCommerce_Export {
             add_action( 'admin_notices', [ $this, 'dependencies_missing_notice' ] );
         }
 
-      		new \YWCE\YWCE_Export_Wizard();
-      		new \YWCE\YWCE_Exporter();
+     			new \YWCE\Export\Wizard\ExportWizard();
+     			new \YWCE\Export\Export();
     }
 
     /**

@@ -878,29 +878,26 @@
 }
 
 /* Source selection cards */
-.source-card {
+#ywce-data-source .card {
     cursor: pointer;
-    transition: all 0.3s ease;
     height: 100%;
     border: 1px solid #dee2e6;
     border-radius: 0.5rem;
     overflow: hidden;
 }
 
-.source-card:hover {
-    transform: translateY(-5px);
+#ywce-data-source .card:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.source-card.active {
-    background-color: #0d6efd;
-    color: white;
-    border-color: #0d6efd;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+#ywce-data-source .card.active {
+    background-color: rgba(13, 110, 253, 0.08);
+    color: inherit;
+    border: 2px dashed #0d6efd;
+    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.15);
 }
 
-.source-icon {
+#ywce-data-source .card .source-icon {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -912,16 +909,16 @@
     transition: all 0.3s ease;
 }
 
-.source-card:hover .source-icon {
+#ywce-data-source .card:hover .source-icon {
     background-color: rgba(13, 110, 253, 0.2);
     transform: scale(1.1);
 }
 
-.source-card.active .source-icon {
-    background-color: rgba(255, 255, 255, 0.2);
+#ywce-data-source .card.active .source-icon {
+    background-color: rgba(13, 110, 253, 0.15);
 }
 
-.source-icon .dashicons {
+#ywce-data-source .card .source-icon .dashicons {
     font-size: 30px;
     width: 30px;
     height: 30px;
@@ -929,8 +926,8 @@
     transition: all 0.3s ease;
 }
 
-.source-card.active .dashicons {
-    color: white;
+#ywce-data-source .card.active .dashicons {
+    color: #0d6efd;
 }
 
 #ywce-wizard .filter-section {

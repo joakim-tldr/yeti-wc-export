@@ -2041,8 +2041,16 @@
           YWCE.state.currentExportIndex = 0;
           YWCE.state.isExporting = true;
 
+          // Initialize current format immediately so UI doesn't show "Unknown"
+          if (Array.isArray(YWCE.state.exportQueue) && YWCE.state.exportQueue.length > 0) {
+            YWCE.currentFormat = YWCE.state.exportQueue[0];
+          } else if (Array.isArray(YWCE.state.selectedFormats) && YWCE.state.selectedFormats.length > 0) {
+            YWCE.currentFormat = YWCE.state.selectedFormats[0];
+          }
+
           YWCE.debug.log("YWCE: Export ID:", YWCE.state.exportId);
           YWCE.debug.log("YWCE: Export queue:", YWCE.state.exportQueue);
+          YWCE.debug.log("YWCE: Current format:", YWCE.currentFormat);
 
           // Process the export
           YWCE.processExport(YWCE.state.exportId);
@@ -2162,6 +2170,12 @@
         } else if (responseData.format_completed) {
           YWCE.debug.log("YWCE: Format completed:", format);
           statusText.text(YWCE.__("Format Completed:") + " " + formatText);
+
+          // Switch to the next format immediately to avoid showing "Unknown"
+          if (responseData.next_format) {
+            YWCE.currentFormat = responseData.next_format;
+            YWCE.debug.log("YWCE: Switching to next format:", YWCE.currentFormat);
+          }
 
           setTimeout(() => YWCE.processExport(exportId), 500);
         } else {

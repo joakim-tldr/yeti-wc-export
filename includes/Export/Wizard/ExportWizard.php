@@ -1,12 +1,11 @@
 <?php
-namespace YWCE;
+namespace YWCE\Export\Wizard;
+
 use WC_Order;
 use WP_User_Query;
-/**
- * Export Wizard Class
- */
-class YWCE_Export_Wizard {
-	private YWCE_Data_Helper $data_helper;
+
+class ExportWizard {
+	private \YWCE\Data\Helper\Helper $data_helper;
 
 	public function __construct() {
 		add_action('admin_menu', [$this, 'add_export_wizard_page']);
@@ -15,8 +14,7 @@ class YWCE_Export_Wizard {
 		add_action('wp_ajax_ywce_fetch_product_types', [$this, 'ajax_fetch_product_types']);
 		add_action('wp_ajax_ywce_fetch_user_roles', [$this, 'ajax_fetch_user_roles']);
 		add_action('wp_ajax_ywce_fetch_order_statuses', [$this, 'ajax_fetch_order_statuses']);
-		
-		$this->data_helper = new YWCE_Data_Helper();
+		$this->data_helper = new \YWCE\Data\Helper\Helper();
 	}
 
 	public function add_export_wizard_page(): void {
@@ -31,9 +29,6 @@ class YWCE_Export_Wizard {
 	}
 
 	public function render_export_wizard(): void {
-		$has_products = false;
-		$has_users = false;
-		$has_orders = false;
 
 		$has_products = $this->has_products();
 		$has_users = $this->has_users();
@@ -54,17 +49,17 @@ class YWCE_Export_Wizard {
 		echo '<div class="wrap">';
 		
 		echo '<div id="ywce-wizard" class="ywce-wizard">';
-
+		
 		// Progress Bar
 		echo '<div class="progress mb-4">';
-		echo '<div class="progress-bar" id="ywce-progress" role="progressbar" style="width: 25%;"></div>';
+		echo '<div class="progress-bar" id="ywce-progress" role="progressbar" style="width: 0%;"></div>';
 		echo '</div>';
 
 		// Step 1 - Source
 		echo '<div class="step step-1 active">';
 		echo '<h2 class="fs-4 mb-4 text-center">' . esc_html__('Select Data Source', 'yeti-woocommerce-export') . '</h2>';
 		
-		// Debug button
+		// Debug button - hidden by default, will be shown via JS if in debug mode
 		echo '<button id="ywce-debug-btn" class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-3 d-none">' . esc_html__('Debug', 'yeti-woocommerce-export') . '</button>';
 		
 		echo '<div id="ywce-data-source" class="row justify-content-center g-4 mb-5">';
@@ -510,277 +505,83 @@ class YWCE_Export_Wizard {
 		echo '</div>';
 	}
 
-	/**
-	 * Fetch data fields for the selected data source.
-	 * @return void
-	 */
 	public function fetch_data_fields(): void {
 		check_ajax_referer('ywce_export_nonce', 'nonce');
-
-		if (!isset($_GET['source'])) {
-			wp_send_json_error(['error' => 'Missing source parameter']);
-			return;
-		}
-
+		if (!isset($_GET['source'])) { wp_send_json_error(['error' => 'Missing source parameter']); return; }
 		$data_source = sanitize_text_field($_GET['source']);
 		global $wpdb;
-
-		$data = [
-			'fields'     => [],
-			'meta'       => [],
-			'taxonomies' => [],
-			'required'   => [],
-		];
-
-			if ($data_source === 'product') {
-				$fields = [
-					'Parent ID',
-					'plytix_variant_of',
-					'ID',
-					'Title',
-					'Short Description',
-					'Description',
-					'Featured Image',
-					'Product Gallery URLs',
-					'Product Categories',
-					'Product Category URL',
-					'Permalink',
-					'Product type',
-					'Product status',
-				];
-
-			$has_variable_products = $wpdb->get_var("
-            SELECT COUNT(*) FROM {$wpdb->posts} 
-            WHERE post_type = 'product_variation'
-        ") > 0;
-
-				if (!$has_variable_products) {
-					unset($fields[0]);
-					// Re-index the array to ensure it's sequential
-					$fields = array_values($fields);
-				} else {
-					$data['required'][] = 'Parent ID';
-				}
-				
-				// Always include these product columns
-				$data['required'][] = 'Product type';
-				$data['required'][] = 'Product status';
-				
-				$data['fields'] = $fields;
-				$data['required'][] = 'ID';
-
-			$product_ids = $wpdb->get_col("
-	            SELECT ID FROM {$wpdb->posts} 
-	            WHERE post_type = 'product'
-	            LIMIT 100
-	        ");
-
+		$data = [ 'fields' => [], 'meta' => [], 'taxonomies' => [], 'required' => [], ];
+		if ($data_source === 'product') {
+			$fields = [ 'Parent ID','plytix_variant_of','ID','Title','Short Description','Description','Featured Image','Product Gallery URLs','Product Categories','Product Category URL','Permalink','Product type','Product status', ];
+			$has_variable_products = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'product_variation'") > 0;
+			if (!$has_variable_products) { unset($fields[0]); $fields = array_values($fields); } else { $data['required'][] = 'Parent ID'; }
+			$data['required'][] = 'Product type'; $data['required'][] = 'Product status';
+			$data['fields'] = $fields; $data['required'][] = 'ID';
+			$product_ids = $wpdb->get_col("SELECT ID FROM {$wpdb->posts} WHERE post_type = 'product' LIMIT 100");
 			$meta_keys = [];
-			foreach ($product_ids as $product_id) {
-				$meta_data = get_post_meta($product_id);
-				if (!empty($meta_data)) {
-					foreach ($meta_data as $key => $value) {
-						if (!in_array($key, $meta_keys)) {
-							$meta_keys[] = $key;
-						}
-					}
-				}
-			}
-
+			foreach ($product_ids as $product_id) { $meta_data = get_post_meta($product_id); if (!empty($meta_data)) { foreach ($meta_data as $key => $value) { if (!in_array($key, $meta_keys)) { $meta_keys[] = $key; } } } }
 			sort($meta_keys);
-
 			$data['meta'] = $meta_keys;
-
 			$taxonomies = get_object_taxonomies('product', 'names');
 			$data['taxonomies'] = is_array($taxonomies) ? $taxonomies : [];
-
 			sort($data['taxonomies']);
-
 		} elseif ($data_source === 'user') {
-			$data['fields'] = [
-				'ID',
-				'Username',
-				'Email',
-				'First Name',
-				'Last Name',
-				'Role',
-				'Registration Date'
-			];
+			$data['fields'] = [ 'ID','Username','Email','First Name','Last Name','Role','Registration Date' ];
 			$data['required'][] = 'ID';
 			$user_ids = $wpdb->get_col("SELECT ID FROM {$wpdb->users} LIMIT 100");
-
 			$meta_keys = [];
-			foreach ($user_ids as $user_id) {
-				$meta_data = get_user_meta($user_id);
-				if (!empty($meta_data)) {
-					foreach ($meta_data as $key => $value) {
-						if (!in_array($key, $meta_keys)) {
-							$meta_keys[] = $key;
-						}
-					}
-				}
-			}
-
+			foreach ($user_ids as $user_id) { $meta_data = get_user_meta($user_id); if (!empty($meta_data)) { foreach ($meta_data as $key => $value) { if (!in_array($key, $meta_keys)) { $meta_keys[] = $key; } } } }
 			sort($meta_keys);
-
 			$data['meta'] = $meta_keys;
 		} elseif ($data_source === 'order') {
-			$data['fields'] = [
-				'ID',
-				'Order Number',
-				'Order Status',
-				'Order Date',
-				'Customer ID',
-				'Customer Email',
-				'Customer First Name',
-				'Customer Last Name',
-				'Billing First Name',
-				'Billing Last Name',
-				'Billing Company',
-				'Billing Address 1',
-				'Billing Address 2',
-				'Billing City',
-				'Billing State',
-				'Billing Postcode',
-				'Billing Country',
-				'Billing Email',
-				'Billing Phone',
-				'Shipping First Name',
-				'Shipping Last Name',
-				'Shipping Company',
-				'Shipping Address 1',
-				'Shipping Address 2',
-				'Shipping City',
-				'Shipping State',
-				'Shipping Postcode',
-				'Shipping Country',
-				'Payment Method',
-				'Payment Method Title',
-				'Transaction ID',
-				'Order Total',
-				'Order Subtotal',
-				'Order Tax',
-				'Order Shipping',
-				'Order Shipping Tax',
-				'Order Discount',
-				'Order Currency',
-				'Order Items',
-				'Order Notes'
-			];
-			
+			$data['fields'] = [ 'ID','Order Number','Order Status','Order Date','Customer ID','Customer Email','Customer First Name','Customer Last Name','Billing First Name','Billing Last Name','Billing Company','Billing Address 1','Billing Address 2','Billing City','Billing State','Billing Postcode','Billing Country','Billing Email','Billing Phone','Shipping First Name','Shipping Last Name','Shipping Company','Shipping Address 1','Shipping Address 2','Shipping City','Shipping State','Shipping Postcode','Shipping Country','Payment Method','Payment Method Title','Transaction ID','Order Total','Order Subtotal','Order Tax','Order Shipping','Order Shipping Tax','Order Discount','Order Currency','Order Items','Order Notes' ];
 			$data['required'][] = 'ID';
-			
-			// Get order meta keys
-			$order_ids = $wpdb->get_col("
-				SELECT ID FROM {$wpdb->posts} 
-				WHERE post_type = 'shop_order'
-				LIMIT 100
-			");
-
+			$order_ids = $wpdb->get_col("SELECT ID FROM {$wpdb->posts} WHERE post_type = 'shop_order' LIMIT 100");
 			$meta_keys = [];
-			foreach ($order_ids as $order_id) {
-				$meta_data = get_post_meta($order_id);
-				if (!empty($meta_data)) {
-					foreach ($meta_data as $key => $value) {
-						if (!in_array($key, $meta_keys) && !in_array($key, ['_edit_lock', '_edit_last'])) {
-							$meta_keys[] = $key;
-						}
-					}
-				}
-			}
-
+			foreach ($order_ids as $order_id) { $meta_data = get_post_meta($order_id); if (!empty($meta_data)) { foreach ($meta_data as $key => $value) { if (!in_array($key, $meta_keys) && !in_array($key, ['_edit_lock', '_edit_last'])) { $meta_keys[] = $key; } } } }
 			sort($meta_keys);
 			$data['meta'] = $meta_keys;
-		} else {
-			wp_send_json_error(['error' => 'Invalid source type']);
-			return;
-		}
-
-		// Ensure all data elements are arrays
+		} else { wp_send_json_error(['error' => 'Invalid source type']); return; }
 		$data['fields'] = is_array($data['fields']) ? $data['fields'] : [];
 		$data['meta'] = is_array($data['meta']) ? $data['meta'] : [];
 		$data['taxonomies'] = is_array($data['taxonomies']) ? $data['taxonomies'] : [];
 		$data['required'] = is_array($data['required']) ? $data['required'] : [];
-
 		wp_send_json($data);
 	}
 
-	/**
-	 * Fetch preview data for the selected data source.
-	 * @return void
-	 */
 	public function fetch_preview_data(): void {
 		check_ajax_referer('ywce_export_nonce', 'nonce');
-
 		$data_source = isset($_GET['source']) ? sanitize_text_field($_GET['source']) : 'product';
-
 		$selected_fields = isset($_GET['fields']) ? array_map('sanitize_text_field', explode(',', $_GET['fields'])) : [];
 		$selected_meta = isset($_GET['meta']) ? array_map('sanitize_text_field', explode(',', $_GET['meta'])) : [];
 		$selected_taxonomies = isset($_GET['taxonomies']) ? array_map('sanitize_text_field', explode(',', $_GET['taxonomies'])) : [];
-		
-		// Ensure Product type and Product status are always included for product previews
 		if ($data_source === 'product') {
-			if (!in_array('Product type', $selected_fields, true)) {
-				$selected_fields[] = 'Product type';
-			}
-			if (!in_array('Product status', $selected_fields, true)) {
-				$selected_fields[] = 'Product status';
-			}
+			if (!in_array('Product type', $selected_fields, true)) { $selected_fields[] = 'Product type'; }
+			if (!in_array('Product status', $selected_fields, true)) { $selected_fields[] = 'Product status'; }
 		}
-
-		if (!in_array('ID', $selected_fields)) {
-			wp_send_json_error(['error' => 'The ID field is required and must be selected.']);
-		}
-
+		if (!in_array('ID', $selected_fields)) { wp_send_json_error(['error' => 'The ID field is required and must be selected.']); }
 		if ($data_source === 'product') {
-			$has_variable_products = get_posts([
-				'post_type' => 'product_variation',
-				'posts_per_page' => 1,
-			]);
-
+			$has_variable_products = get_posts([ 'post_type' => 'product_variation', 'posts_per_page' => 1, ]);
 			if ($has_variable_products) {
 				$has_either = in_array('Parent ID', $selected_fields, true) || in_array('plytix_variant_of', $selected_fields, true);
-				if (!$has_either) {
-					wp_send_json_error(['error' => 'Select either Parent ID or plytix_variant_of to include variations.']);
-				}
+				if (!$has_either) { wp_send_json_error(['error' => 'Select either Parent ID or plytix_variant_of to include variations.']); }
 			}
 		}
-
 		$preview_data = [];
-
 		if ($data_source === 'product') {
-			$args = [
-				'post_type'      => 'product',
-				'posts_per_page' => 10,
-				'post_status'    => 'publish',
-			];
-
+			$args = [ 'post_type' => 'product', 'posts_per_page' => 10, 'post_status' => 'publish', ];
 			$products = get_posts($args);
-
 			foreach ($products as $product) {
 				$wc_product = wc_get_product($product->ID);
-				if (!$wc_product) {
-					continue;
-				}
-
+				if (!$wc_product) { continue; }
 				$product_data = $this->data_helper->get_product_data($wc_product, $selected_fields, $selected_meta, $selected_taxonomies);
 				$preview_data[] = $product_data;
-
 				if ($wc_product->is_type('variable')) {
-					$variation_args = [
-						'post_type'      => 'product_variation',
-						'post_parent'    => $wc_product->get_id(),
-						'posts_per_page' => -1,
-						'post_status'    => 'publish',
-					];
-
+					$variation_args = [ 'post_type' => 'product_variation', 'post_parent' => $wc_product->get_id(), 'posts_per_page' => -1, 'post_status' => 'publish', ];
 					$variations = get_posts($variation_args);
 					foreach ($variations as $variation) {
 						$wc_variation = wc_get_product($variation->ID);
-						if (!$wc_variation) {
-							continue;
-						}
-
+						if (!$wc_variation) { continue; }
 						$variation_data = $this->data_helper->get_product_data($wc_variation, $selected_fields, $selected_meta, $selected_taxonomies);
 						$variation_data['Parent ID'] = $wc_product->get_id();
 						$preview_data[] = $variation_data;
@@ -788,113 +589,46 @@ class YWCE_Export_Wizard {
 				}
 			}
 		} elseif ($data_source === 'user') {
-			$user_query = new WP_User_Query([
-				'number' => 10,
-			]);
-
+			$user_query = new WP_User_Query([ 'number' => 10, ]);
 			$users = $user_query->get_results();
-			if (!empty($users)) {
-				foreach ($users as $user) {
-					$user_data = $this->data_helper->get_user_data($user->ID, $selected_fields, $selected_meta);
-					$preview_data[] = $user_data;
-				}
-			}
+			if (!empty($users)) { foreach ($users as $user) { $user_data = $this->data_helper->get_user_data($user->ID, $selected_fields, $selected_meta); $preview_data[] = $user_data; } }
 		} elseif ($data_source === 'order') {
-			$args = [
-				'post_type'      => 'shop_order',
-				'posts_per_page' => 10,
-				'post_status'    => array_keys(wc_get_order_statuses()),
-			];
-
+			$args = [ 'post_type' => 'shop_order', 'posts_per_page' => 10, 'post_status' => array_keys(wc_get_order_statuses()), ];
 			$orders = get_posts($args);
-			if (!empty($orders)) {
-				foreach ($orders as $order_post) {
-					$order = wc_get_order($order_post->ID);
-					if (!$order) {
-						continue;
-					}
-					
-						$order_data = $this->data_helper->get_order_data($order, $selected_fields, $selected_meta);
-						$preview_data[] = $order_data;
-				}
-			}
+			if (!empty($orders)) { foreach ($orders as $order_post) { $order = wc_get_order($order_post->ID); if (!$order) { continue; } $order_data = $this->data_helper->get_order_data($order, $selected_fields, $selected_meta); $preview_data[] = $order_data; } }
 		}
-
 		wp_send_json(['data' => $preview_data]);
 	}
 
-
-	/**
-	 * Fetch product types.
-	 * @return void
-	 */
 	public function ajax_fetch_product_types(): void {
 		check_ajax_referer('ywce_export_nonce', 'nonce');
-		
 		$product_types = $this->data_helper->get_product_types();
-		
 		wp_send_json_success(['product_types' => $product_types]);
 	}
-
-	/**
-	 * Fetch user roles.
-	 * @return void
-	 */
 	public function ajax_fetch_user_roles(): void {
 		check_ajax_referer('ywce_export_nonce', 'nonce');
-		
 		$user_roles = $this->data_helper->get_user_roles();
 		wp_send_json_success(['user_roles' => $user_roles]);
 	}
-
-	/**
-	 * Fetch order statuses.
-	 * @return void
-	 */
 	public function ajax_fetch_order_statuses(): void {
 		check_ajax_referer('ywce_export_nonce', 'nonce');
-		
 		$order_statuses = $this->data_helper->get_order_statuses();
 		wp_send_json_success(['order_statuses' => $order_statuses]);
 	}
 
-	/**
-	 * Check if there are any products.
-	 * @return bool
-	 */
 	private function has_products(): bool {
 		global $wpdb;
-		$count = $wpdb->get_var("
-			SELECT COUNT(*)
-			FROM {$wpdb->posts}
-			WHERE post_type IN ('product', 'product_variation')
-			AND post_status != 'trash'
-		");
+		$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type IN ('product', 'product_variation') AND post_status != 'trash'");
 		return !empty($count);
 	}
-
-	/**
-	 * Check if there are any users.
-	 * @return bool
-	 */
 	private function has_users(): bool {
 		global $wpdb;
 		$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->users}");
 		return !empty($count);
 	}
-
-	/**
-	 * Check if there are any orders.
-	 * @return bool
-	 */
 	private function has_orders(): bool {
 		global $wpdb;
-		$count = $wpdb->get_var("
-			SELECT COUNT(*)
-			FROM {$wpdb->posts}
-			WHERE post_type = 'shop_order'
-			AND post_status != 'trash'
-		");
+		$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'shop_order' AND post_status != 'trash'");
 		return !empty($count);
 	}
-} 
+}
