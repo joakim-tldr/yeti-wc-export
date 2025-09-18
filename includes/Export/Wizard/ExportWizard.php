@@ -534,7 +534,7 @@ class ExportWizard {
 			sort($meta_keys);
 			$data['meta'] = $meta_keys;
 		} elseif ($data_source === 'order') {
-			$data['fields'] = [ 'ID','Order Number','Order Status','Order Date','Customer ID','Customer Email','Customer First Name','Customer Last Name','Billing First Name','Billing Last Name','Billing Company','Billing Address 1','Billing Address 2','Billing City','Billing State','Billing Postcode','Billing Country','Billing Email','Billing Phone','Shipping First Name','Shipping Last Name','Shipping Company','Shipping Address 1','Shipping Address 2','Shipping City','Shipping State','Shipping Postcode','Shipping Country','Payment Method','Payment Method Title','Transaction ID','Order Total','Order Subtotal','Order Tax','Order Shipping','Order Shipping Tax','Order Discount','Order Currency','Order Items','Order Notes' ];
+			$data['fields'] = [ 'ID','Order Status','Order Date','Customer ID','Customer Email','Customer First Name','Customer Last Name','Order Items','Order Notes' ];
 			$data['required'][] = 'ID';
 			$order_ids = $wpdb->get_col("SELECT ID FROM {$wpdb->posts} WHERE post_type = 'shop_order' LIMIT 100");
 			$meta_keys = [];
