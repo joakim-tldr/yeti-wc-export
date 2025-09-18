@@ -381,6 +381,11 @@
 
           YWCE.state.selectedDataSource = source;
 
+          // Reset selections when changing data source to avoid cross-source carryover
+          YWCE.state.selectedFields = [];
+          YWCE.state.selectedMeta = [];
+          YWCE.state.selectedTaxonomies = [];
+
           YWCE.state.fieldsModifiedAfterExport = true;
 
           if (YWCE.elements.nextStepButton) {
@@ -710,9 +715,16 @@
           return;
         }
 
-        YWCE.state.selectedFields = [];
-        YWCE.state.selectedMeta = [];
-        YWCE.state.selectedTaxonomies = [];
+        // Preserve previous selections when returning to Step 2
+        const prevSelectedFields = Array.isArray(YWCE.state.selectedFields)
+          ? YWCE.state.selectedFields.slice()
+          : [];
+        const prevSelectedMeta = Array.isArray(YWCE.state.selectedMeta)
+          ? YWCE.state.selectedMeta.slice()
+          : [];
+        const prevSelectedTaxonomies = Array.isArray(YWCE.state.selectedTaxonomies)
+          ? YWCE.state.selectedTaxonomies.slice()
+          : [];
 
         const fieldsArray = Array.isArray(data.fields)
           ? data.fields
@@ -751,6 +763,27 @@
           document.querySelector("#ywce-taxonomy-container").style.display =
             "none";
         }
+
+        // Re-apply any previously selected fields/meta/taxonomies
+        const reselect = function(values, containerId, selectId) {
+          if (!Array.isArray(values) || values.length === 0) return;
+          values.forEach(function(val){
+            var item = document.querySelector('#' + containerId + ' .field-item[data-value="' + val + '"]');
+            var opt = document.querySelector('#' + selectId + ' option[value="' + val + '"]');
+            if (item) { item.classList.add('selected'); }
+            if (opt) { opt.selected = true; }
+          });
+        };
+        reselect(prevSelectedFields, 'ywce-data-fields-container', 'ywce-data-fields');
+        reselect(prevSelectedMeta, 'ywce-meta-fields-container', 'ywce-meta-fields');
+        if (YWCE.state.selectedDataSource === 'product') {
+          reselect(prevSelectedTaxonomies, 'ywce-taxonomy-fields-container', 'ywce-taxonomy-fields');
+        }
+
+        // Sync state arrays with hidden selects after reselecting
+        YWCE.state.selectedFields = Array.from(document.querySelectorAll('#ywce-data-fields option:checked')).map(function(o){ return o.value; });
+        YWCE.state.selectedMeta = Array.from(document.querySelectorAll('#ywce-meta-fields option:checked')).map(function(o){ return o.value; });
+        YWCE.state.selectedTaxonomies = Array.from(document.querySelectorAll('#ywce-taxonomy-fields option:checked')).map(function(o){ return o.value; });
 
         if (data.required && data.required.length > 0) {
           const requiredArray = Array.isArray(data.required)
@@ -2971,7 +3004,8 @@
     }
 
     jQuery("#summary-export-name").text(exportName);
-    jQuery("#summary-format").text(format.toUpperCase());
+    const formatLabel = format === "excel" ? "XLSX" : (format ? format.toUpperCase() : "");
+    jQuery("#summary-format").text(formatLabel);
     jQuery("#summary-data-source").text(dataSourceText);
 
     if (dataSource === "product") {

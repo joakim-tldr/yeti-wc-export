@@ -340,14 +340,7 @@ class Export {
 				$uploads_base    = \YWCE\Support\Filesystem::exportBaseUploads();
 				$allowed_bases[] = $uploads_base;
 			}
-			$real       = realpath( $file_path );
-			$valid_path = false;
-			if ( $real ) {
-				foreach ( $allowed_bases as $base ) {
-					$base_real = realpath( $base );
-					if ( $base_real && strncmp( $real, $base_real, strlen( $base_real ) ) === 0 ) { $valid_path = true; break; }
-				}
-			}
+			$valid_path = \YWCE\Support\Filesystem::isSafePath( $file_path, $allowed_bases );
 			if ( ! $valid_path ) { throw new \RuntimeException( 'Invalid file path' ); }
 			if ( ! file_exists( $file_path ) ) { throw new \RuntimeException( 'File not found' ); }
 			if ( ! is_readable( $file_path ) ) { throw new \RuntimeException( 'File not readable' ); }

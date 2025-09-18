@@ -102,7 +102,7 @@ class Format {
 			return;
 		}
 		try {
-			switch ( $format ) {
+				switch ( $format ) {
 				case 'csv':
 					$output = @fopen( $file_path, 'w' );
 					if ( ! $output ) { $this->debug_log( 'Failed to open file for writing: ' . $file_path ); return; }
@@ -154,7 +154,7 @@ class Format {
 					try {
 						$temp_csv = $file_path . '.temp.csv';
 						$output   = @fopen( $temp_csv, 'w' );
-						if ( ! $output ) { $this->debug_log( 'Failed to open temporary CSV file for Excel export: ' . $temp_csv ); return; }
+						if ( ! $output ) { $this->debug_log( 'Failed to open temporary CSV file for XLSX export: ' . $temp_csv ); return; }
 						fputcsv( $output, $display_headers );
 						foreach ( $data as $row ) {
 							$ordered_row = [];
@@ -162,7 +162,7 @@ class Format {
 							fputcsv( $output, $ordered_row );
 						}
 						fclose( $output );
-					} catch ( \Exception $e ) { $this->debug_log( 'Excel processing error: ' . $e->getMessage() ); }
+					} catch ( \Exception $e ) { $this->debug_log( 'XLSX processing error: ' . $e->getMessage() ); }
 					break;
 			}
 		} catch ( \Exception $e ) { $this->debug_log( 'Error creating export file: ' . $e->getMessage() ); }
@@ -176,7 +176,7 @@ class Format {
 			catch ( \Throwable $e ) { $this->debug_log( 'Writer append failed, falling back to legacy: ' . $e->getMessage() ); }
 		}
 		try {
-			switch ( $format ) {
+				switch ( $format ) {
 				case 'csv':
 					$output = @fopen( $file_path, 'a' );
 					if ( ! $output ) { $this->debug_log( 'Failed to open file for appending: ' . $file_path ); return; }
@@ -239,7 +239,7 @@ class Format {
 					try {
 						$temp_csv = $file_path . '.temp.csv';
 						$output   = @fopen( $temp_csv, 'a' );
-						if ( ! $output ) { $this->debug_log( 'Failed to open temporary CSV file for Excel export: ' . $temp_csv ); return; }
+						if ( ! $output ) { $this->debug_log( 'Failed to open temporary CSV file for XLSX export: ' . $temp_csv ); return; }
 						$headers = $this->file_headers[ $file_path ] ?? [];
 						foreach ( $data as $row ) {
 							$ordered_row = [];
@@ -248,7 +248,7 @@ class Format {
 							fputcsv( $output, $ordered_row );
 						}
 						fclose( $output );
-					} catch ( \Exception $e ) { $this->debug_log( 'Excel processing error: ' . $e->getMessage() ); }
+					} catch ( \Exception $e ) { $this->debug_log( 'XLSX processing error: ' . $e->getMessage() ); }
 					break;
 			}
 		} catch ( \Exception $e ) { $this->debug_log( 'Error appending to export file: ' . $e->getMessage() ); }
@@ -287,7 +287,7 @@ class Format {
 					$temp_csv = $file_path . '.temp.csv';
 					if ( file_exists( $temp_csv ) ) {
 						try {
-							$this->debug_log( 'YWCE: Finalizing Excel file: ' . $file_path );
+							$this->debug_log( 'YWCE: Finalizing XLSX file: ' . $file_path );
 							$this->debug_log( 'YWCE: Temporary CSV file exists: ' . $temp_csv );
 							if ( class_exists( 'PhpOffice\\PhpSpreadsheet\\Spreadsheet' ) ) {
 								try {
@@ -300,12 +300,12 @@ class Format {
 									$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx( $spreadsheet );
 									$writer->setOffice2003Compatibility( false );
 									$writer->save( $file_path );
-								} catch ( \PhpOffice\PhpSpreadsheet\Reader\Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for Excel: ' . $file_path ); } }
-								catch ( \PhpOffice\PhpSpreadsheet\Writer\Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for Excel: ' . $file_path ); } }
-								catch ( \Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for Excel: ' . $file_path ); } }
-							} else { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to finalize Excel file (PhpSpreadsheet not available): ' . $file_path ); } }
-							if ( file_exists( $temp_csv ) ) { @unlink( $temp_csv ); $this->debug_log( 'YWCE: Removed temporary CSV file: ' . $temp_csv ); }
-						} catch ( \Exception $e ) { $this->debug_log( 'YWCE: Excel processing error during finalization: ' . $e->getMessage() ); }
+																	} catch ( \PhpOffice\PhpSpreadsheet\Reader\Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path ); } }
+																	catch ( \PhpOffice\PhpSpreadsheet\Writer\Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path ); } }
+																	catch ( \Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path ); } }
+																} else { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to finalize XLSX file (PhpSpreadsheet not available): ' . $file_path ); } }
+																if ( file_exists( $temp_csv ) ) { @unlink( $temp_csv ); $this->debug_log( 'YWCE: Removed temporary CSV file: ' . $temp_csv ); }
+															} catch ( \Exception $e ) { $this->debug_log( 'YWCE: XLSX processing error during finalization: ' . $e->getMessage() ); }
 					}
 					break;
 			}

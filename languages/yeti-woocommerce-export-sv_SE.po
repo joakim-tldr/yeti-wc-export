@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/yeti-woocommerce-"
 "export\n"
 "POT-Creation-Date: 2025-03-10 11:18+0100\n"
-"PO-Revision-Date: 2025-07-18 10:28+0200\n"
+"PO-Revision-Date: 2025-09-18 10:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: Swedish\n"
 "Language: sv_SE\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 "X-Domain: yeti-woocommerce-export\n"
 
 #: includes/admin/class-export-wizard.php:22
@@ -479,15 +479,15 @@ msgstr "Se till att från-datumet inte är senare än till-datumet"
 
 #: includes/translations.php:89
 msgid "productsDataSource"
-msgstr "Produkter"
+msgstr "produkter"
 
 #: includes/translations.php:90
 msgid "ordersDataSource"
-msgstr "Beställningar"
+msgstr "beställningar"
 
 #: includes/translations.php:91
 msgid "usersDataSource"
-msgstr "Användare"
+msgstr "användare"
 
 #: includes/translations.php:92
 msgid "fieldsSelected"
@@ -495,15 +495,15 @@ msgstr "valda fält"
 
 #: includes/translations.php:93
 msgid "allTypes"
-msgstr "Alla typer"
+msgstr "alla typer"
 
 #: includes/translations.php:94
 msgid "allStatuses"
-msgstr "Alla statusar"
+msgstr "alla statusar"
 
 #: includes/translations.php:95
 msgid "allFields"
-msgstr "Alla fält"
+msgstr "alla fält"
 
 #: includes/translations.php:96
 msgid "to"
