@@ -1,5 +1,13 @@
 <?php
+
 namespace YWCE\Data\Helper;
+
+use YWCE\Export\Writer\CsvWriter;
+use YWCE\Export\Writer\FormatWriterInterface;
+use YWCE\Export\Writer\JsonWriter;
+use YWCE\Export\Writer\XlsxWriter;
+use YWCE\Export\Writer\XmlWriter;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Format {
 	/**
@@ -18,26 +26,45 @@ class Format {
 	 */
 	private array $writers = [];
 
-	private function debug_log( $message ) {
+	/**
+	 * Log debug messages to error_log if WP_DEBUG is enabled and WP_DEBUG_LOG is true.
+	 *
+	 * @param $message
+	 *
+	 * @return void
+	 */
+	private function debug_log( $message ): void {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
 			error_log( $message );
 		}
 	}
 
-	public function get_file_extension( $format ) {
-		switch ( $format ) {
-			case 'excel':
-				return 'xlsx';
-			case 'xml':
-				return 'xml';
-			case 'json':
-				return 'json';
-			case 'csv':
-			default:
-				return 'csv';
-		}
+	/**
+	 * Get file extension based on format.
+	 *
+	 * @param $format
+	 *
+	 * @return string
+	 */
+	public function get_file_extension( $format ): string {
+		return match ( $format ) {
+			'excel' => 'xlsx',
+			'xml' => 'xml',
+			'json' => 'json',
+			default => 'csv',
+		};
 	}
 
+	/**
+	 * Get writer for a file path.
+	 *
+	 * @param string $file_path
+	 * @param string $format
+	 * @param array $headers
+	 * @param array $header_mapping
+	 *
+	 * @return CsvWriter|FormatWriterInterface|JsonWriter|XlsxWriter|XmlWriter|null
+	 */
 	private function get_or_create_writer( string $file_path, string $format, array $headers, array $header_mapping ) {
 		if ( isset( $this->writers[ $file_path ] ) ) {
 			return $this->writers[ $file_path ];
@@ -54,7 +81,7 @@ class Format {
 					$writer = new \YWCE\Export\Writer\XmlWriter();
 					break;
 				case 'excel':
-					if ( ! class_exists( '\\PhpOffice\\PhpSpreadsheet\\Spreadsheet' ) ) {
+					if ( ! class_exists( Spreadsheet::class ) ) {
 						return null;
 					}
 					$writer = new \YWCE\Export\Writer\XlsxWriter();
@@ -64,23 +91,38 @@ class Format {
 			}
 			$writer->open( $file_path, $headers, $header_mapping );
 			$this->writers[ $file_path ] = $writer;
+
 			return $writer;
 		} catch ( \Throwable $e ) {
 			$this->debug_log( 'Failed to create writer: ' . $e->getMessage() );
+
 			return null;
 		}
 	}
 
+	/**
+	 * Create export file.
+	 *
+	 * @param $file_path
+	 * @param $format
+	 * @param $data
+	 * @param $headers
+	 * @param $header_mapping
+	 *
+	 * @return void
+	 */
 	public function create_export_file( $file_path, $format, $data, $headers = [], $header_mapping = [] ): void {
 		$dir = dirname( $file_path );
 		if ( ! is_dir( $dir ) ) {
 			if ( ! wp_mkdir_p( $dir ) ) {
 				$this->debug_log( 'Export directory is not writable: ' . $dir );
+
 				return;
 			}
 		}
 		if ( ! is_writable( $dir ) ) {
 			$this->debug_log( 'Export directory is not writable: ' . $dir );
+
 			return;
 		}
 		if ( empty( $headers ) && ! empty( $data ) ) {
@@ -94,22 +136,29 @@ class Format {
 		}
 		$this->file_headers[ $file_path ]        = $headers;
 		$this->file_header_mapping[ $file_path ] = $header_mapping;
-		$writer = $this->get_or_create_writer( $file_path, $format, $headers, $header_mapping );
+		$writer                                  = $this->get_or_create_writer( $file_path, $format, $headers, $header_mapping );
 		if ( $writer ) {
 			if ( ! empty( $data ) ) {
 				$writer->append( $data );
 			}
+
 			return;
 		}
 		try {
-				switch ( $format ) {
+			switch ( $format ) {
 				case 'csv':
 					$output = @fopen( $file_path, 'w' );
-					if ( ! $output ) { $this->debug_log( 'Failed to open file for writing: ' . $file_path ); return; }
+					if ( ! $output ) {
+						$this->debug_log( 'Failed to open file for writing: ' . $file_path );
+
+						return;
+					}
 					fputcsv( $output, $display_headers );
 					foreach ( $data as $row ) {
 						$ordered_row = [];
-						foreach ( $headers as $header ) { $ordered_row[] = $row[ $header ] ?? ''; }
+						foreach ( $headers as $header ) {
+							$ordered_row[] = $row[ $header ] ?? '';
+						}
 						fputcsv( $output, $ordered_row );
 					}
 					fclose( $output );
@@ -119,16 +168,25 @@ class Format {
 						$json_data = [];
 						foreach ( $data as $row ) {
 							$json_row = [];
-							foreach ( $row as $key => $value ) { $display_key = $header_mapping[ $key ] ?? $key; $json_row[ $display_key ] = $value; }
+							foreach ( $row as $key => $value ) {
+								$display_key              = $header_mapping[ $key ] ?? $key;
+								$json_row[ $display_key ] = $value;
+							}
 							$json_data[] = $json_row;
 						}
-						$json_content = json_encode( $json_data, JSON_PRETTY_PRINT );
+						$json_content = json_encode( $json_data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT );
 					} else {
-						$json_content = json_encode( $data, JSON_PRETTY_PRINT );
+						$json_content = json_encode( $data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT );
 					}
-					if ( $json_content === false ) { $this->debug_log( 'JSON encoding failed for export file: ' . $file_path ); return; }
+					if ( $json_content === false ) {
+						$this->debug_log( 'JSON encoding failed for export file: ' . $file_path );
+
+						return;
+					}
 					$result = @file_put_contents( $file_path, $json_content );
-					if ( $result === false ) { $this->debug_log( 'Failed to write JSON to file: ' . $file_path ); }
+					if ( $result === false ) {
+						$this->debug_log( 'Failed to write JSON to file: ' . $file_path );
+					}
 					break;
 				case 'xml':
 					try {
@@ -137,7 +195,10 @@ class Format {
 							$xml_data = [];
 							foreach ( $data as $row ) {
 								$xml_row = [];
-								foreach ( $row as $key => $value ) { $display_key = $header_mapping[ $key ] ?? $key; $xml_row[ $display_key ] = $value; }
+								foreach ( $row as $key => $value ) {
+									$display_key             = $header_mapping[ $key ] ?? $key;
+									$xml_row[ $display_key ] = $value;
+								}
 								$xml_data[] = $xml_row;
 							}
 							$this->array_to_xml( $xml_data, $xml );
@@ -145,70 +206,133 @@ class Format {
 							$this->array_to_xml( $data, $xml );
 						}
 						$xml_content = $xml->asXML();
-						if ( $xml_content === false ) { $this->debug_log( 'XML generation failed for export file: ' . $file_path ); return; }
+						if ( $xml_content === false ) {
+							$this->debug_log( 'XML generation failed for export file: ' . $file_path );
+
+							return;
+						}
 						$result = @file_put_contents( $file_path, $xml_content );
-						if ( $result === false ) { $this->debug_log( 'Failed to write XML to file: ' . $file_path ); }
-					} catch ( \Exception $e ) { $this->debug_log( 'XML processing error: ' . $e->getMessage() ); }
+						if ( $result === false ) {
+							$this->debug_log( 'Failed to write XML to file: ' . $file_path );
+						}
+					} catch ( \Exception $e ) {
+						$this->debug_log( 'XML processing error: ' . $e->getMessage() );
+					}
 					break;
 				case 'excel':
 					try {
 						$temp_csv = $file_path . '.temp.csv';
 						$output   = @fopen( $temp_csv, 'w' );
-						if ( ! $output ) { $this->debug_log( 'Failed to open temporary CSV file for XLSX export: ' . $temp_csv ); return; }
+						if ( ! $output ) {
+							$this->debug_log( 'Failed to open temporary CSV file for XLSX export: ' . $temp_csv );
+
+							return;
+						}
 						fputcsv( $output, $display_headers );
 						foreach ( $data as $row ) {
 							$ordered_row = [];
-							foreach ( $headers as $header ) { $ordered_row[] = $row[ $header ] ?? ''; }
+							foreach ( $headers as $header ) {
+								$ordered_row[] = $row[ $header ] ?? '';
+							}
 							fputcsv( $output, $ordered_row );
 						}
 						fclose( $output );
-					} catch ( \Exception $e ) { $this->debug_log( 'XLSX processing error: ' . $e->getMessage() ); }
+					} catch ( \Exception $e ) {
+						$this->debug_log( 'XLSX processing error: ' . $e->getMessage() );
+					}
 					break;
 			}
-		} catch ( \Exception $e ) { $this->debug_log( 'Error creating export file: ' . $e->getMessage() ); }
+		} catch ( \Exception $e ) {
+			$this->debug_log( 'Error creating export file: ' . $e->getMessage() );
+		}
 	}
 
+	/**
+	 * Append data to export file.
+	 *
+	 * @param $file_path
+	 * @param $format
+	 * @param $data
+	 * @param $header_mapping
+	 *
+	 * @return void
+	 */
 	public function append_to_export_file( $file_path, $format, $data, $header_mapping = [] ): void {
-		if ( ! file_exists( $file_path ) ) { $this->debug_log( 'Export file does not exist: ' . $file_path ); return; }
-		if ( ! is_writable( $file_path ) ) { $this->debug_log( 'Export file is not writable: ' . $file_path ); return; }
+		if ( ! file_exists( $file_path ) ) {
+			$this->debug_log( 'Export file does not exist: ' . $file_path );
+
+			return;
+		}
+		if ( ! is_writable( $file_path ) ) {
+			$this->debug_log( 'Export file is not writable: ' . $file_path );
+
+			return;
+		}
 		if ( isset( $this->writers[ $file_path ] ) ) {
-			try { $this->writers[ $file_path ]->append( $data ); return; }
-			catch ( \Throwable $e ) { $this->debug_log( 'Writer append failed, falling back to legacy: ' . $e->getMessage() ); }
+			try {
+				$this->writers[ $file_path ]->append( $data );
+
+				return;
+			} catch ( \Throwable $e ) {
+				$this->debug_log( 'Writer append failed, falling back to legacy: ' . $e->getMessage() );
+			}
 		}
 		try {
-				switch ( $format ) {
+			switch ( $format ) {
 				case 'csv':
 					$output = @fopen( $file_path, 'a' );
-					if ( ! $output ) { $this->debug_log( 'Failed to open file for appending: ' . $file_path ); return; }
+					if ( ! $output ) {
+						$this->debug_log( 'Failed to open file for appending: ' . $file_path );
+
+						return;
+					}
 					$headers = $this->file_headers[ $file_path ] ?? [];
 					foreach ( $data as $row ) {
 						$ordered_row = [];
 						$use_headers = ! empty( $headers ) ? $headers : array_keys( $row );
-						foreach ( $use_headers as $header ) { $ordered_row[] = $row[ $header ] ?? ''; }
+						foreach ( $use_headers as $header ) {
+							$ordered_row[] = $row[ $header ] ?? '';
+						}
 						fputcsv( $output, $ordered_row );
 					}
 					fclose( $output );
 					break;
 				case 'json':
 					$json_content = @file_get_contents( $file_path );
-					if ( $json_content === false ) { $this->debug_log( 'Failed to read existing JSON file: ' . $file_path ); return; }
-					$existing_data = json_decode( $json_content, true );
-					if ( $existing_data === null && json_last_error() !== JSON_ERROR_NONE ) { $this->debug_log( 'JSON decoding failed: ' . json_last_error_msg() ); $existing_data = []; }
+					if ( $json_content === false ) {
+						$this->debug_log( 'Failed to read existing JSON file: ' . $file_path );
+
+						return;
+					}
+					$existing_data = json_decode( $json_content, true, 512, JSON_THROW_ON_ERROR );
+					if ( $existing_data === null && json_last_error() !== JSON_ERROR_NONE ) {
+						$this->debug_log( 'JSON decoding failed: ' . json_last_error_msg() );
+						$existing_data = [];
+					}
 					if ( ! empty( $header_mapping ) ) {
 						$json_data = [];
 						foreach ( $data as $row ) {
 							$json_row = [];
-							foreach ( $row as $key => $value ) { $display_key = $header_mapping[ $key ] ?? $key; $json_row[ $display_key ] = $value; }
+							foreach ( $row as $key => $value ) {
+								$display_key              = $header_mapping[ $key ] ?? $key;
+								$json_row[ $display_key ] = $value;
+							}
 							$json_data[] = $json_row;
 						}
 						$new_data = array_merge( $existing_data, $json_data );
 					} else {
 						$new_data = array_merge( $existing_data, $data );
 					}
-					$json_content = json_encode( $new_data, JSON_PRETTY_PRINT );
-					if ( $json_content === false ) { $this->debug_log( 'JSON encoding failed for export file: ' . $file_path ); return; }
+					$json_content = json_encode( $new_data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT );
+					if ( $json_content === false ) {
+						$this->debug_log( 'JSON encoding failed for export file: ' . $file_path );
+
+						return;
+					}
 					$result = @file_put_contents( $file_path, $json_content );
-					if ( $result === false ) { $this->debug_log( 'Failed to write JSON to file: ' . $file_path ); }
+					if ( $result === false ) {
+						$this->debug_log( 'Failed to write JSON to file: ' . $file_path );
+					}
 					break;
 				case 'xml':
 					try {
@@ -216,15 +340,25 @@ class Format {
 						$existing_data = [];
 						if ( file_exists( $temp_file ) ) {
 							$temp_content = @file_get_contents( $temp_file );
-							if ( $temp_content === false ) { $this->debug_log( 'Failed to read temporary XML file: ' . $temp_file ); return; }
+							if ( $temp_content === false ) {
+								$this->debug_log( 'Failed to read temporary XML file: ' . $temp_file );
+
+								return;
+							}
 							$existing_data = unserialize( $temp_content, [ 'allowed_classes' => false ] );
-							if ( $existing_data === false ) { $this->debug_log( 'Failed to unserialize temporary XML data' ); $existing_data = []; }
+							if ( $existing_data === false ) {
+								$this->debug_log( 'Failed to unserialize temporary XML data' );
+								$existing_data = [];
+							}
 						}
 						if ( ! empty( $header_mapping ) ) {
 							$xml_data = [];
 							foreach ( $data as $row ) {
 								$xml_row = [];
-								foreach ( $row as $key => $value ) { $display_key = $header_mapping[ $key ] ?? $key; $xml_row[ $display_key ] = $value; }
+								foreach ( $row as $key => $value ) {
+									$display_key             = $header_mapping[ $key ] ?? $key;
+									$xml_row[ $display_key ] = $value;
+								}
 								$xml_data[] = $xml_row;
 							}
 							$new_data = array_merge( $existing_data, $xml_data );
@@ -232,36 +366,67 @@ class Format {
 							$new_data = array_merge( $existing_data, $data );
 						}
 						$result = @file_put_contents( $temp_file, serialize( $new_data ) );
-						if ( $result === false ) { $this->debug_log( 'Failed to write temporary XML data: ' . $temp_file ); }
-					} catch ( \Exception $e ) { $this->debug_log( 'XML processing error: ' . $e->getMessage() ); }
+						if ( $result === false ) {
+							$this->debug_log( 'Failed to write temporary XML data: ' . $temp_file );
+						}
+					} catch ( \Exception $e ) {
+						$this->debug_log( 'XML processing error: ' . $e->getMessage() );
+					}
 					break;
 				case 'excel':
 					try {
 						$temp_csv = $file_path . '.temp.csv';
 						$output   = @fopen( $temp_csv, 'a' );
-						if ( ! $output ) { $this->debug_log( 'Failed to open temporary CSV file for XLSX export: ' . $temp_csv ); return; }
+						if ( ! $output ) {
+							$this->debug_log( 'Failed to open temporary CSV file for XLSX export: ' . $temp_csv );
+
+							return;
+						}
 						$headers = $this->file_headers[ $file_path ] ?? [];
 						foreach ( $data as $row ) {
 							$ordered_row = [];
 							$use_headers = ! empty( $headers ) ? $headers : array_keys( $row );
-							foreach ( $use_headers as $header ) { $ordered_row[] = $row[ $header ] ?? ''; }
+							foreach ( $use_headers as $header ) {
+								$ordered_row[] = $row[ $header ] ?? '';
+							}
 							fputcsv( $output, $ordered_row );
 						}
 						fclose( $output );
-					} catch ( \Exception $e ) { $this->debug_log( 'XLSX processing error: ' . $e->getMessage() ); }
+					} catch ( \Exception $e ) {
+						$this->debug_log( 'XLSX processing error: ' . $e->getMessage() );
+					}
 					break;
 			}
-		} catch ( \Exception $e ) { $this->debug_log( 'Error appending to export file: ' . $e->getMessage() ); }
+		} catch ( \Exception $e ) {
+			$this->debug_log( 'Error appending to export file: ' . $e->getMessage() );
+		}
 	}
 
+	/**
+	 * Finalize export file.
+	 *
+	 * @param $file_path
+	 * @param $format
+	 * @param $headers
+	 *
+	 * @return void
+	 */
 	public function finalize_export_file( $file_path, $format, $headers ): void {
 		try {
-			if ( empty( $file_path ) ) { $this->debug_log( 'YWCE: Empty file path for finalization' ); return; }
+			if ( empty( $file_path ) ) {
+				$this->debug_log( 'YWCE: Empty file path for finalization' );
+
+				return;
+			}
 			$this->debug_log( 'YWCE: Finalizing file: ' . $file_path . ' with format: ' . $format );
 			if ( isset( $this->writers[ $file_path ] ) ) {
-				try { $this->writers[ $file_path ]->close(); }
-				catch ( \Throwable $e ) { $this->debug_log( 'Error closing writer: ' . $e->getMessage() ); }
+				try {
+					$this->writers[ $file_path ]->close();
+				} catch ( \Throwable $e ) {
+					$this->debug_log( 'Error closing writer: ' . $e->getMessage() );
+				}
 				unset( $this->writers[ $file_path ] );
+
 				return;
 			}
 			switch ( $format ) {
@@ -269,18 +434,38 @@ class Format {
 					$temp_file = $file_path . '.temp';
 					if ( file_exists( $temp_file ) ) {
 						$temp_content = @file_get_contents( $temp_file );
-						if ( $temp_content === false ) { $this->debug_log( 'Failed to read temporary XML file during finalization: ' . $temp_file ); return; }
+						if ( $temp_content === false ) {
+							$this->debug_log( 'Failed to read temporary XML file during finalization: ' . $temp_file );
+
+							return;
+						}
 						$all_data = unserialize( $temp_content, [ 'allowed_classes' => false ] );
-						if ( $all_data === false ) { $this->debug_log( 'Failed to unserialize temporary XML data during finalization' ); return; }
+						if ( $all_data === false ) {
+							$this->debug_log( 'Failed to unserialize temporary XML data during finalization' );
+
+							return;
+						}
 						try {
 							$xml = new \SimpleXMLElement( '<?xml version="1.0" encoding="UTF-8"?><data></data>' );
 							$this->array_to_xml( $all_data, $xml );
 							$xml_content = $xml->asXML();
-							if ( $xml_content === false ) { $this->debug_log( 'XML generation failed during finalization: ' . $file_path ); return; }
+							if ( $xml_content === false ) {
+								$this->debug_log( 'XML generation failed during finalization: ' . $file_path );
+
+								return;
+							}
 							$result = @file_put_contents( $file_path, $xml_content );
-							if ( $result === false ) { $this->debug_log( 'Failed to write XML to file during finalization: ' . $file_path ); return; }
-							if ( file_exists( $temp_file ) ) { @unlink( $temp_file ); }
-						} catch ( \Exception $e ) { $this->debug_log( 'XML processing error during finalization: ' . $e->getMessage() ); }
+							if ( $result === false ) {
+								$this->debug_log( 'Failed to write XML to file during finalization: ' . $file_path );
+
+								return;
+							}
+							if ( file_exists( $temp_file ) ) {
+								@unlink( $temp_file );
+							}
+						} catch ( \Exception $e ) {
+							$this->debug_log( 'XML processing error during finalization: ' . $e->getMessage() );
+						}
 					}
 					break;
 				case 'excel':
@@ -289,7 +474,7 @@ class Format {
 						try {
 							$this->debug_log( 'YWCE: Finalizing XLSX file: ' . $file_path );
 							$this->debug_log( 'YWCE: Temporary CSV file exists: ' . $temp_csv );
-							if ( class_exists( 'PhpOffice\\PhpSpreadsheet\\Spreadsheet' ) ) {
+							if ( class_exists( Spreadsheet::class ) ) {
 								try {
 									$reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
 									$reader->setInputEncoding( 'UTF-8' );
@@ -297,33 +482,72 @@ class Format {
 									$reader->setEnclosure( '"' );
 									$reader->setSheetIndex( 0 );
 									$spreadsheet = $reader->load( $temp_csv );
-									$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx( $spreadsheet );
+									$writer      = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx( $spreadsheet );
 									$writer->setOffice2003Compatibility( false );
 									$writer->save( $file_path );
-																	} catch ( \PhpOffice\PhpSpreadsheet\Reader\Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path ); } }
-																	catch ( \PhpOffice\PhpSpreadsheet\Writer\Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path ); } }
-																	catch ( \Exception $e ) { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path ); } }
-																} else { if ( ! copy( $temp_csv, $file_path ) ) { $this->debug_log( 'YWCE: Failed to finalize XLSX file (PhpSpreadsheet not available): ' . $file_path ); } }
-																if ( file_exists( $temp_csv ) ) { @unlink( $temp_csv ); $this->debug_log( 'YWCE: Removed temporary CSV file: ' . $temp_csv ); }
-															} catch ( \Exception $e ) { $this->debug_log( 'YWCE: XLSX processing error during finalization: ' . $e->getMessage() ); }
+								} catch ( \PhpOffice\PhpSpreadsheet\Reader\Exception $e ) {
+									if ( ! copy( $temp_csv, $file_path ) ) {
+										$this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path );
+									}
+								} catch ( \PhpOffice\PhpSpreadsheet\Writer\Exception $e ) {
+									if ( ! copy( $temp_csv, $file_path ) ) {
+										$this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path );
+									}
+								} catch ( \Exception $e ) {
+									if ( ! copy( $temp_csv, $file_path ) ) {
+										$this->debug_log( 'YWCE: Failed to copy CSV as fallback for XLSX: ' . $file_path );
+									}
+								}
+							} else {
+								if ( ! copy( $temp_csv, $file_path ) ) {
+									$this->debug_log( 'YWCE: Failed to finalize XLSX file (PhpSpreadsheet not available): ' . $file_path );
+								}
+							}
+							if ( file_exists( $temp_csv ) ) {
+								@unlink( $temp_csv );
+								$this->debug_log( 'YWCE: Removed temporary CSV file: ' . $temp_csv );
+							}
+						} catch ( \Exception $e ) {
+							$this->debug_log( 'YWCE: XLSX processing error during finalization: ' . $e->getMessage() );
+						}
 					}
 					break;
 			}
-		} catch ( \Exception $e ) { $this->debug_log( 'Error finalizing export file: ' . $e->getMessage() ); }
+		} catch ( \Exception $e ) {
+			$this->debug_log( 'Error finalizing export file: ' . $e->getMessage() );
+		}
 	}
 
+	/**
+	 * Convert array to XML.
+	 *
+	 * @param $data
+	 * @param $xml
+	 *
+	 * @return void
+	 */
 	private function array_to_xml( $data, &$xml ): void {
 		foreach ( $data as $key => $value ) {
-			if ( is_numeric( $key ) ) { $key = 'item'; }
+			if ( is_numeric( $key ) ) {
+				$key = 'item';
+			}
 			$key = preg_replace( '/[^a-zA-Z0-9_]/', '_', $key );
-			if ( is_numeric( substr( $key, 0, 1 ) ) ) { $key = 'item_' . $key; }
+			if ( is_numeric( $key[0] ) ) {
+				$key = 'item_' . $key;
+			}
 			if ( is_array( $value ) ) {
 				$subnode = $xml->addChild( $key );
 				$this->array_to_xml( $value, $subnode );
 			} else {
-				if ( $value === null ) { $value = ''; }
-				if ( is_bool( $value ) ) { $value = $value ? 'true' : 'false'; }
-				if ( is_numeric( $value ) ) { $value = (string) $value; }
+				if ( $value === null ) {
+					$value = '';
+				}
+				if ( is_bool( $value ) ) {
+					$value = $value ? 'true' : 'false';
+				}
+				if ( is_numeric( $value ) ) {
+					$value = (string) $value;
+				}
 				$value = htmlspecialchars( $value, ENT_QUOTES | ENT_XML1, 'UTF-8' );
 				$xml->addChild( $key, $value );
 			}

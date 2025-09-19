@@ -195,7 +195,7 @@
 #ywce-wizard .step-4.active select.form-select {
     min-height: unset;
 }
- 
+
 #ywce-wizard select.form-select:focus {
     border-color: #86b7fe;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);

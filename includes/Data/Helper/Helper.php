@@ -1,16 +1,19 @@
 <?php
+
 namespace YWCE\Data\Helper;
 
 use WC_Order;
 
 class Helper {
 	public function get_product_data( $wc_product, $selected_fields, $selected_meta, $selected_taxonomies ): array {
-		$registry = new \YWCE\Data\FieldRegistry();
-		$mapper   = new \YWCE\Data\Mapper\ProductDataMapper( $registry );
-		$product_data = $mapper->map( $wc_product, $selected_fields, $selected_meta, $selected_taxonomies );
+		$registry          = new \YWCE\Data\FieldRegistry();
+		$mapper            = new \YWCE\Data\Mapper\ProductDataMapper( $registry );
+		$product_data      = $mapper->map( $wc_product, $selected_fields, $selected_meta, $selected_taxonomies );
 		$registered_fields = array_keys( $registry->get( 'product' ) );
 		foreach ( $selected_fields as $field ) {
-			if ( in_array( $field, $registered_fields, true ) ) { continue; }
+			if ( in_array( $field, $registered_fields, true ) ) {
+				continue;
+			}
 			switch ( $field ) {
 				case 'Short Description':
 					$product_data['Short Description'] = $wc_product->get_short_description();
@@ -31,22 +34,46 @@ class Helper {
 					$product_data['Product Category URL'] = $this->get_final_category_url( $wc_product->get_id() );
 					break;
 				default:
-					if ( ! isset( $product_data[ $field ] ) ) { $product_data[ $field ] = ''; }
+					if ( ! isset( $product_data[ $field ] ) ) {
+						$product_data[ $field ] = '';
+					}
 			}
 		}
+
 		return $product_data;
 	}
 
+	/**
+	 * Get user data
+	 *
+	 * @param $user_id
+	 * @param $selected_fields
+	 * @param $selected_meta
+	 *
+	 * @return array
+	 */
 	public function get_user_data( $user_id, $selected_fields, $selected_meta ): array {
 		$user = get_userdata( $user_id );
-		if ( ! $user ) { return []; }
+		if ( ! $user ) {
+			return [];
+		}
 		$mapper = new \YWCE\Data\Mapper\UserDataMapper();
-		return $mapper->map($user, $selected_fields, $selected_meta);
+
+		return $mapper->map( $user, $selected_fields, $selected_meta );
 	}
 
+	/**
+	 * Get product categories hierarchy
+	 *
+	 * @param $product_id
+	 *
+	 * @return string
+	 */
 	public function get_product_categories_hierarchy( $product_id ): string {
 		$categories = get_the_terms( $product_id, 'product_cat' );
-		if ( empty( $categories ) || is_wp_error( $categories ) ) { return ''; }
+		if ( empty( $categories ) || is_wp_error( $categories ) ) {
+			return '';
+		}
 		$category_tree = [];
 		foreach ( $categories as $category ) {
 			$full_hierarchy   = [];
@@ -54,30 +81,59 @@ class Helper {
 			while ( $current_category ) {
 				$full_hierarchy[] = $current_category->name;
 				$current_category = get_term( $current_category->parent, 'product_cat' );
-				if ( is_wp_error( $current_category ) ) { break; }
+				if ( is_wp_error( $current_category ) ) {
+					break;
+				}
 			}
 			$category_tree[] = implode( ' > ', array_reverse( $full_hierarchy ) );
 		}
+
 		return implode( ', ', $category_tree );
 	}
 
+	/**
+	 * Get product category url
+	 *
+	 * @param $product_id
+	 *
+	 * @return string
+	 */
 	public function get_final_category_url( $product_id ): string {
 		$categories = get_the_terms( $product_id, 'product_cat' );
-		if ( empty( $categories ) || is_wp_error( $categories ) ) { return ''; }
-		$category_urls = array_map( function ( $category ) { return get_term_link( $category, 'product_cat' ); }, $categories );
+		if ( empty( $categories ) || is_wp_error( $categories ) ) {
+			return '';
+		}
+		$category_urls = array_map( function ( $category ) {
+			return get_term_link( $category, 'product_cat' );
+		}, $categories );
+
 		return implode( ', ', $category_urls );
 	}
 
+	/**
+	 * Get product gallery urls
+	 *
+	 * @param $product_id
+	 *
+	 * @return array
+	 */
 	public function get_product_gallery_urls( $product_id ): array {
 		$gallery_ids = get_post_meta( $product_id, '_product_image_gallery', true );
-		if ( ! $gallery_ids ) { return []; }
+		if ( ! $gallery_ids ) {
+			return [];
+		}
 		$image_ids = explode( ',', $gallery_ids );
+
 		return array_map( 'wp_get_attachment_url', $image_ids );
 	}
 
+	/**
+	 * Get product types
+	 * @return array
+	 */
 	public function get_product_types(): array {
 		global $wpdb;
-		$query = $wpdb->prepare( "
+		$query           = $wpdb->prepare( "
 			SELECT DISTINCT terms.slug, terms.name
 			FROM {$wpdb->terms} terms
 			INNER JOIN {$wpdb->term_taxonomy} tt ON terms.term_id = tt.term_id
@@ -87,21 +143,28 @@ class Helper {
 			AND posts.post_type = 'product'
 			AND posts.post_status IN ('publish', 'draft', 'private', 'pending')
 		", 'product_type' );
-		$results = $wpdb->get_results( $query );
-		$product_types = [];
+		$results         = $wpdb->get_results( $query );
+		$product_types   = [];
 		$product_types[] = [ 'value' => 'simple', 'label' => 'Simple' ];
 		if ( ! empty( $results ) ) {
 			foreach ( $results as $result ) {
-				if ( $result->slug === 'simple' ) { continue; }
+				if ( $result->slug === 'simple' ) {
+					continue;
+				}
 				$product_types[] = [ 'value' => $result->slug, 'label' => ucfirst( $result->name ) ];
 			}
 		}
+
 		return $product_types;
 	}
 
+	/**
+	 * Get user roles
+	 * @return array
+	 */
 	public function get_user_roles(): array {
 		global $wpdb;
-		$query = $wpdb->prepare( "
+		$query   = $wpdb->prepare( "
 			SELECT DISTINCT meta.meta_value
 			FROM {$wpdb->usermeta} meta
 			WHERE meta.meta_key = %s
@@ -111,28 +174,35 @@ class Helper {
 			)
 		", $wpdb->prefix . 'capabilities' );
 		$results = $wpdb->get_results( $query );
-		$roles = [];
+		$roles   = [];
 		if ( ! empty( $results ) ) {
 			foreach ( $results as $result ) {
 				$capabilities = maybe_unserialize( $result->meta_value );
 				if ( is_array( $capabilities ) ) {
 					foreach ( array_keys( $capabilities ) as $role ) {
 						if ( ! isset( $roles[ $role ] ) ) {
-							$role_names = wp_roles()->get_names();
-							$label      = $role_names[ $role ] ?? ucfirst( str_replace( '_', ' ', $role ) );
+							$role_names     = wp_roles()->get_names();
+							$label          = $role_names[ $role ] ?? ucfirst( str_replace( '_', ' ', $role ) );
 							$roles[ $role ] = [ 'value' => $role, 'label' => $label ];
 						}
 					}
 				}
 			}
 		}
-		usort( $roles, static function ( $a, $b ) { return strcmp( $a['label'], $b['label'] ); } );
+		usort( $roles, static function ( $a, $b ) {
+			return strcmp( $a['label'], $b['label'] );
+		} );
+
 		return array_values( $roles );
 	}
 
+	/**
+	 * Get order statuses
+	 * @return array
+	 */
 	public function get_order_statuses(): array {
 		global $wpdb;
-		$query = "
+		$query    = "
 			SELECT DISTINCT posts.post_status, COUNT(*) as count
 			FROM {$wpdb->posts} posts
 			WHERE posts.post_type = 'shop_order'
@@ -140,25 +210,44 @@ class Helper {
 			AND posts.post_status != 'auto-draft'
 			GROUP BY posts.post_status
 		";
-		$results = $wpdb->get_results( $query );
+		$results  = $wpdb->get_results( $query );
 		$statuses = [];
 		if ( ! empty( $results ) ) {
 			$wc_statuses = wc_get_order_statuses();
 			foreach ( $results as $result ) {
 				$status = $result->post_status;
-				if ( in_array( $status, [ 'auto-draft', 'trash' ] ) ) { continue; }
-				if ( isset( $wc_statuses[ $status ] ) ) { $label = $wc_statuses[ $status ]; }
-				elseif ( isset( $wc_statuses[ 'wc-' . $status ] ) ) { $label = $wc_statuses[ 'wc-' . $status ]; }
-				else { $label = ucfirst( str_replace( [ 'wc-', '-' ], [ '', ' ' ], $status ) ); }
+				if ( in_array( $status, [ 'auto-draft', 'trash' ] ) ) {
+					continue;
+				}
+				if ( isset( $wc_statuses[ $status ] ) ) {
+					$label = $wc_statuses[ $status ];
+				} elseif ( isset( $wc_statuses[ 'wc-' . $status ] ) ) {
+					$label = $wc_statuses[ 'wc-' . $status ];
+				} else {
+					$label = ucfirst( str_replace( [ 'wc-', '-' ], [ '', ' ' ], $status ) );
+				}
 				$statuses[] = [ 'value' => $status, 'label' => $label, 'count' => (int) $result->count ];
 			}
 		}
-		usort( $statuses, static function ( $a, $b ) { return strcmp( $a['label'], $b['label'] ); } );
+		usort( $statuses, static function ( $a, $b ) {
+			return strcmp( $a['label'], $b['label'] );
+		} );
+
 		return $statuses;
 	}
 
+	/**
+	 * Get order data
+	 *
+	 * @param WC_Order $order
+	 * @param array $selected_fields
+	 * @param array $selected_meta
+	 *
+	 * @return array
+	 */
 	public function get_order_data( WC_Order $order, array $selected_fields, array $selected_meta ): array {
 		$mapper = new \YWCE\Data\Mapper\OrderDataMapper();
-		return $mapper->map($order, $selected_fields, $selected_meta);
+
+		return $mapper->map( $order, $selected_fields, $selected_meta );
 	}
 }

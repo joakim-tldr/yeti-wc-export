@@ -3,14 +3,16 @@
 namespace YWCE\Support;
 
 /**
- * Filesystem utilities for YWCE.
+ * Filesystem utilities.
  * - exportBaseUploads(): returns the uploads-based export directory path.
  * - isSafePath(): validates a path is inside one of the allowed base directories (prevents traversal).
  * - safePath(): alias to isSafePath() kept for readability and future BC.
  */
 class Filesystem {
+
 	/**
-	 * Base directory inside uploads used for storing export files.
+	 * Get the uploads-based export directory path.
+	 * @return string
 	 */
 	public static function exportBaseUploads(): string {
 		$upload = wp_get_upload_dir();
@@ -19,11 +21,12 @@ class Filesystem {
 	}
 
 	/**
-	 * Check that the given path resolves within at least one of the allowed base directories.
+	 * Validate a path is inside one of the allowed base directories (prevents traversal).
 	 *
-	 * @param string $path          Full file path to validate.
-	 * @param array  $allowedBases  List of base directory paths that are considered safe roots.
-	 * @return bool                 True if the real path starts with one of the allowed base paths.
+	 * @param string $path
+	 * @param array $allowedBases
+	 *
+	 * @return bool
 	 */
 	public static function isSafePath( string $path, array $allowedBases ): bool {
 		$real = realpath( $path );
@@ -41,8 +44,12 @@ class Filesystem {
 	}
 
 	/**
-	 * Alias for isSafePath(). Provided for readability and potential backward compatibility
-	 * with older references to a method named "safePath".
+	 * Alias to isSafePath() kept for readability and future BC.
+	 *
+	 * @param string $path
+	 * @param array $allowedBases
+	 *
+	 * @return bool
 	 */
 	public static function safePath( string $path, array $allowedBases ): bool {
 		return self::isSafePath( $path, $allowedBases );

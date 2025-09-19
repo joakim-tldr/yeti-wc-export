@@ -1,8 +1,6 @@
-<?php use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use YWCE\YWCE_Data_Helper;
-use YWCE\YWCE_Format_Handler;
-use YWCE\YWCE_Exporter;
-use YWCE\YWCE_Export_Wizard;
+<?php
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
  * Plugin Name: Yeti WooCommerce Export
@@ -188,7 +186,7 @@ class Yeti_WooCommerce_Export {
     }
 
     /**
-     * Dependencies missing notice
+     * Dependency missing notice
      */
     public function dependencies_missing_notice(): void {
         ?>

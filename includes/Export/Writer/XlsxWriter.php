@@ -3,6 +3,7 @@
 namespace YWCE\Export\Writer;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class XlsxWriter implements FormatWriterInterface {
@@ -11,6 +12,14 @@ class XlsxWriter implements FormatWriterInterface {
 	private int $rowIdx = 1;
 	private array $headers = [];
 
+	/**
+	 * Open a XLSX file for writing.
+	 * @param string $path
+	 * @param array $headers
+	 * @param array $map
+	 *
+	 * @return void
+	 */
 	public function open( string $path, array $headers, array $map = [] ): void {
 		$this->path    = $path;
 		$this->headers = $headers;
@@ -21,6 +30,12 @@ class XlsxWriter implements FormatWriterInterface {
 		$this->rowIdx = 2;
 	}
 
+	/**
+	 * Append rows to the XLSX file.
+	 * @param array $rows
+	 *
+	 * @return void
+	 */
 	public function append( array $rows ): void {
 		if ( ! $this->sheet ) {
 			return;
@@ -35,6 +50,11 @@ class XlsxWriter implements FormatWriterInterface {
 		}
 	}
 
+	/**
+	 * Close the XLSX file.
+	 * @return void
+	 * @throws Exception
+	 */
 	public function close(): void {
 		if ( ! $this->sheet ) {
 			return;

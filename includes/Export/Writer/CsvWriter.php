@@ -7,6 +7,14 @@ class CsvWriter implements FormatWriterInterface {
 	private array $headers = [];
 	private array $map = [];
 
+	/**
+	 * Open a CSV file for writing.
+	 * @param string $path
+	 * @param array $headers
+	 * @param array $map
+	 *
+	 * @return void
+	 */
 	public function open( string $path, array $headers, array $map = [] ): void {
 		$this->fh = fopen( $path, 'w' );
 		if ( ! $this->fh ) {
@@ -18,6 +26,12 @@ class CsvWriter implements FormatWriterInterface {
 		fputcsv( $this->fh, $display );
 	}
 
+	/**
+	 * Append rows to the CSV file.
+	 * @param array $rows
+	 *
+	 * @return void
+	 */
 	public function append( array $rows ): void {
 		if ( ! $this->fh ) {
 			return;
@@ -31,6 +45,10 @@ class CsvWriter implements FormatWriterInterface {
 		}
 	}
 
+	/**
+	 * Close the CSV file.
+	 * @return void
+	 */
 	public function close(): void {
 		if ( $this->fh ) {
 			fclose( $this->fh );

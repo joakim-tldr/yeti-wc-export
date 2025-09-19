@@ -8,6 +8,14 @@ class JsonWriter implements FormatWriterInterface {
 	private array $headers = [];
 	private array $map = [];
 
+	/**
+	 * Open a JSON file for writing.
+	 * @param string $path
+	 * @param array $headers
+	 * @param array $map
+	 *
+	 * @return void
+	 */
 	public function open( string $path, array $headers, array $map = [] ): void {
 		$this->fh = fopen( $path, 'w' );
 		if ( ! $this->fh ) {
@@ -19,6 +27,12 @@ class JsonWriter implements FormatWriterInterface {
 		$this->first = true;
 	}
 
+	/**
+	 * Append rows to the JSON file.
+	 * @param array $rows
+	 *
+	 * @return void
+	 */
 	public function append( array $rows ): void {
 		if ( ! $this->fh ) {
 			return;
@@ -37,6 +51,10 @@ class JsonWriter implements FormatWriterInterface {
 		}
 	}
 
+	/**
+	 * Close the JSON file.
+	 * @return void
+	 */
 	public function close(): void {
 		if ( ! $this->fh ) {
 			return;
